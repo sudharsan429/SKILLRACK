@@ -18,11 +18,7 @@ CodeCampus connects a single-page frontend (HTML5, CSS3, JavaScript) to a robust
 - **Pre-Configured Demo Credentials**:
   | Role | Identifier | Password | Default Person |
   | :--- | :--- | :--- | :--- |
-  | **Student** | `student@demo.com` (or `STU001`) | `demo123` | Alex Morgan |
-  | **Faculty** | `faculty@demo.com` (or `FAC001`) | `demo123` | Dr. Priya Kumar |
-  | **College Admin** | `admin@demo.com` | `demo123` | Karthik Raman |
-  | **Super Admin** | `super@demo.com` | `demo123` | Platform Admin |
-
+ 
 ---
 
 ### 2. Isolated Sandboxed Code Execution
