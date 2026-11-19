@@ -1,0 +1,3820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>INOVATE SOLUTION TECHNOLOGY — SKILLRACK</title>
+<style>
+:root {
+  /* ========================================================
+     IST BRAND PALETTE — CLEAN & MINIMAL
+     ======================================================== */
+  --primary: #0071bc;
+  --primary-hover: #005d9e;
+  --primary-active: #004b80;
+  --primary-light: #eff6ff;
+  --primary-subtle: #dbeafe;
+  --primary-ring: rgba(0, 113, 188, 0.2);
+
+  --ist-blue: #0071bc;
+  --ist-purple: #704fe7;
+  --ist-cyan: #29abe2;
+
+  /* Blue accents */
+  --blue: #0071bc;
+  --blue-hover: #005d9e;
+  --blue-light: #eff6ff;
+  --blue-subtle: #bfdbfe;
+
+  /* Neutral Canvas & Surfaces */
+  --bg: #f8fafc;
+  --bg-subtle: #f1f5f9;
+  --panel: #ffffff;
+  --panel-card: #ffffff;
+
+  --text: #0f172a;
+  --text-body: #334155;
+  --text-muted: #64748b;
+  --text-subtle: #94a3b8;
+
+  --line: #e2e8f0;
+  --line-strong: #cbd5e1;
+
+  /* Status Colors */
+  --green: #16a34a;
+  --green-bg: #f0fdf4;
+  --green-border: #bbf7d0;
+
+  --red: #dc2626;
+  --red-bg: #fef2f2;
+  --red-border: #fecaca;
+
+  --amber: #d97706;
+  --amber-bg: #fffbeb;
+  --amber-border: #fde68a;
+
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-full: 9999px;
+
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.03);
+
+  --font: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', ui-monospace, Menlo, Monaco, Consolas, monospace;
+}
+
+[data-theme="dark"], body.dark {
+  --primary: #38bdf8;
+  --primary-hover: #7dd3fc;
+  --primary-active: #0284c7;
+  --primary-light: #082f49;
+  --primary-subtle: #0c4a6e;
+  --primary-ring: rgba(56, 189, 248, 0.25);
+
+  --blue: #38bdf8;
+  --blue-light: #082f49;
+  --blue-subtle: #0c4a6e;
+
+  --bg: #0f172a;
+  --bg-subtle: #1e293b;
+  --panel: #1e293b;
+  --panel-card: #1e293b;
+
+  --text: #f8fafc;
+  --text-body: #cbd5e1;
+  --text-muted: #94a3b8;
+  --text-subtle: #64748b;
+
+  --line: #334155;
+  --line-strong: #475569;
+
+  --green: #4ade80;
+  --green-bg: rgba(34, 197, 94, 0.15);
+  --green-border: rgba(34, 197, 94, 0.3);
+
+  --red: #f87171;
+  --red-bg: rgba(239, 68, 68, 0.15);
+  --red-border: rgba(239, 68, 68, 0.3);
+
+  --amber: #fbbf24;
+  --amber-bg: rgba(245, 158, 11, 0.15);
+  --amber-border: rgba(245, 158, 11, 0.3);
+
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text-body);
+  font: 14px/1.5 var(--font);
+  -webkit-font-smoothing: antialiased;
+}
+button, input, select, textarea { font: inherit; }
+button { cursor: pointer; border: 0; outline: none; }
+.hidden { display: none !important; }
+
+/* Clean, standard typography */
+h1, h2, h3, h4 {
+  color: var(--text);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+p { margin: 0; color: var(--text-muted); }
+.muted { color: var(--text-muted); }
+
+/* Badges & Labels */
+.sub-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--primary);
+  margin-bottom: 6px;
+}
+
+/* Brand Display */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 800;
+  user-select: none;
+  cursor: pointer;
+}
+.brand-logo-wrap {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+.ist-logo-svg {
+  width: 40px;
+  height: 40px;
+  overflow: visible;
+}
+.brand-title {
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+.brand-subtitle {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+
+/* Login View Layout */
+.login-wrap {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  background: var(--panel);
+}
+.login-art {
+  padding: 8%;
+  background: linear-gradient(160deg, #0f4c81 0%, #0071bc 100%);
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.login-art h1 {
+  font-size: clamp(30px, 3.8vw, 46px);
+  line-height: 1.15;
+  max-width: 520px;
+  margin: 0 0 16px;
+  color: #ffffff;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+.login-art p {
+  color: #e0f2fe;
+  font-size: 15px;
+  line-height: 1.6;
+  max-width: 460px;
+}
+.art-stat {
+  display: flex;
+  gap: 36px;
+  margin-top: 48px;
+}
+.art-stat strong {
+  font-size: 28px;
+  font-weight: 800;
+  display: block;
+  color: #ffffff;
+  letter-spacing: -0.01em;
+}
+.art-stat span {
+  font-size: 13px;
+  color: #bfdbfe;
+  font-weight: 500;
+}
+.login-box {
+  width: min(440px, 88%);
+  margin: auto;
+  padding: 30px 0;
+}
+.login-box h2 {
+  font-size: 26px;
+  margin: 12px 0 6px;
+}
+
+/* Form Fields */
+.field {
+  display: grid;
+  gap: 6px;
+  margin: 15px 0;
+}
+.field label {
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--text);
+}
+.field input, .field select, .field textarea, .toolbar input, .toolbar select {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 9px 12px;
+  background: var(--panel);
+  color: var(--text);
+  outline: none;
+  font-size: 14px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.field input:focus, .field select:focus, .field textarea:focus, .toolbar input:focus, .toolbar select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-ring);
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 9px 16px;
+  border-radius: var(--radius-sm);
+  background: var(--primary);
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 1.3;
+  border: 1px solid transparent;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+  text-decoration: none;
+  box-shadow: var(--shadow-sm);
+}
+.btn:hover {
+  background: var(--primary-hover);
+}
+.btn:active {
+  background: var(--primary-active);
+}
+.btn.secondary {
+  background: var(--bg-subtle);
+  color: var(--text);
+  border: 1px solid var(--line);
+  box-shadow: none;
+}
+.btn.secondary:hover {
+  background: var(--line);
+  border-color: var(--line-strong);
+}
+.btn.blue {
+  background: var(--primary-light);
+  color: var(--primary);
+  border: 1px solid var(--primary-subtle);
+  box-shadow: none;
+}
+.btn.blue:hover {
+  background: #e0f2fe;
+}
+.btn.cyan {
+  background: #f0f9ff;
+  color: #0369a1;
+  border: 1px solid #bae6fd;
+  box-shadow: none;
+}
+.btn.cyan:hover {
+  background: #e0f2fe;
+}
+.btn.ghost {
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px solid var(--line);
+  box-shadow: none;
+}
+.btn.ghost:hover {
+  background: var(--bg-subtle);
+  color: var(--text);
+}
+.btn.danger {
+  background: var(--red-bg);
+  color: var(--red);
+  border: 1px solid var(--red-border);
+  box-shadow: none;
+}
+.btn.danger:hover {
+  background: #fee2e2;
+}
+.btn.success {
+  background: var(--green);
+  color: #fff;
+  box-shadow: var(--shadow-sm);
+}
+.btn.success:hover {
+  background: #15803d;
+}
+.btn.small {
+  padding: 6px 12px;
+  font-size: 12px;
+}
+.btn.full {
+  width: 100%;
+}
+
+/* Status Pills */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  font-size: 11px;
+  font-weight: 600;
+  background: var(--green-bg);
+  color: var(--green);
+  border: 1px solid var(--green-border);
+}
+.pill.blue, .pill.purple {
+  background: var(--primary-light);
+  color: var(--primary);
+  border-color: var(--primary-subtle);
+}
+.pill.cyan {
+  background: #f0f9ff;
+  color: #0284c7;
+  border-color: #bae6fd;
+}
+.pill.warn {
+  background: var(--amber-bg);
+  color: var(--amber);
+  border-color: var(--amber-border);
+}
+.pill.bad {
+  background: var(--red-bg);
+  color: var(--red);
+  border-color: var(--red-border);
+}
+
+/* Demo Role Selection Chips */
+.demo-role-chips {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin: 14px 0 20px;
+}
+.demo-chip-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 9px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-subtle);
+  border: 1px solid var(--line);
+  color: var(--text);
+  text-align: left;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+.demo-chip-btn:hover {
+  background: var(--primary-light);
+  border-color: var(--primary-subtle);
+}
+.demo-chip-btn strong {
+  font-size: 12px;
+  color: var(--text);
+}
+.demo-chip-btn span {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* Platform Workspace Layout */
+.app {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 250px 1fr;
+}
+.sidebar {
+  background: var(--panel);
+  border-right: 1px solid var(--line);
+  padding: 20px 12px;
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  z-index: 5;
+}
+.sidebar .brand {
+  padding: 0 6px 20px;
+}
+.nav-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1.1px;
+  color: var(--text-subtle);
+  font-weight: 700;
+  padding: 12px 10px 6px;
+}
+.nav {
+  display: grid;
+  gap: 2px;
+  overflow-y: auto;
+}
+.nav button {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  text-align: left;
+  background: transparent;
+  color: var(--text-body);
+  padding: 9px 12px;
+  border-radius: var(--radius-sm);
+  font-weight: 500;
+  font-size: 13px;
+  transition: background-color 0.12s ease, color 0.12s ease;
+}
+.nav button:hover {
+  background: var(--bg-subtle);
+  color: var(--text);
+}
+.nav button.active {
+  background: var(--primary-light);
+  color: var(--primary);
+  font-weight: 600;
+}
+.nav .ico {
+  width: 18px;
+  text-align: center;
+  font-size: 15px;
+  color: inherit;
+}
+.side-bottom {
+  margin-top: auto;
+  border-top: 1px solid var(--line);
+  padding: 16px 6px 0;
+}
+.user-mini {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: #ffffff;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+.user-mini small {
+  display: block;
+  color: var(--text-muted);
+  font-size: 12px;
+}
+.main {
+  min-width: 0;
+  background: var(--bg);
+}
+.topbar {
+  height: 64px;
+  background: var(--panel);
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 28px;
+  position: sticky;
+  top: 0;
+  z-index: 4;
+}
+.top-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.top-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.icon-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-subtle);
+  border: 1px solid var(--line);
+  color: var(--text-muted);
+  display: grid;
+  place-items: center;
+  font-size: 14px;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+.icon-btn:hover {
+  background: var(--panel);
+  color: var(--text);
+  border-color: var(--line-strong);
+}
+
+/* Role Switcher Chips */
+.role-switcher {
+  display: flex;
+  align-items: center;
+  background: var(--bg-subtle);
+  border: 1px solid var(--line);
+  padding: 2px;
+  border-radius: var(--radius-sm);
+  gap: 2px;
+}
+.role-chip {
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  background: transparent;
+  color: var(--text-muted);
+  transition: background-color 0.12s ease, color 0.12s ease;
+}
+.role-chip:hover {
+  color: var(--text);
+}
+.role-chip.active {
+  background: var(--panel);
+  color: var(--primary);
+  box-shadow: var(--shadow-sm);
+  font-weight: 600;
+}
+
+.content {
+  padding: 24px 28px;
+  max-width: 1400px;
+  margin: auto;
+}
+.page-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 22px;
+}
+.page-head h1 {
+  font-size: 22px;
+  margin: 0 0 3px;
+}
+
+/* Grid & Cards */
+.grid {
+  display: grid;
+  gap: 16px;
+}
+.stats {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-bottom: 20px;
+}
+.card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: 18px;
+  box-shadow: var(--shadow-sm);
+  min-width: 0;
+  position: relative;
+  transition: border-color 0.15s ease;
+}
+.card:hover {
+  border-color: var(--line-strong);
+}
+.stat-top {
+  display: flex;
+  justify-content: space-between;
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 13px;
+}
+.stat-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  background: var(--primary-light);
+  color: var(--primary);
+  display: grid;
+  place-items: center;
+  font-size: 15px;
+}
+.stat-value {
+  font-size: 26px;
+  font-weight: 800;
+  margin: 10px 0 2px;
+  color: var(--text);
+  letter-spacing: -0.01em;
+}
+.positive {
+  color: var(--green);
+  font-size: 12px;
+  font-weight: 600;
+}
+.negative {
+  color: var(--red);
+  font-size: 12px;
+  font-weight: 600;
+}
+.card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+.two {
+  grid-template-columns: 1fr 1fr;
+}
+.three {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+/* Tables */
+.table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--panel);
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 13px;
+}
+th {
+  padding: 11px 14px;
+  background: var(--bg-subtle);
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid var(--line);
+}
+td {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--line);
+  color: var(--text);
+}
+tbody tr:last-child td {
+  border-bottom: 0;
+}
+tbody tr:hover {
+  background: var(--bg-subtle);
+}
+
+/* Progress & Analytics Bars */
+.bar {
+  height: 8px;
+  background: var(--bg-subtle);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  border: 1px solid var(--line);
+}
+.bar span {
+  height: 100%;
+  display: block;
+  background: var(--primary);
+  border-radius: var(--radius-full);
+  transition: width 0.3s ease;
+}
+.topic {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 6px;
+  margin: 12px 0;
+}
+.topic .bar {
+  grid-column: 1 / -1;
+}
+
+/* Activity Bar Chart */
+.activity-bar {
+  background: var(--primary);
+  border-radius: 3px 3px 0 0;
+  transition: height 0.3s ease;
+}
+.activity-bar:hover {
+  background: var(--primary-hover);
+}
+
+/* Toolbar & Filter Controls */
+.toolbar {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+.toolbar input {
+  max-width: 260px;
+}
+.toolbar select {
+  max-width: 200px;
+}
+
+/* Problem Items */
+.problem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+}
+.problem:last-child {
+  border: 0;
+}
+.problem p {
+  margin: 3px 0 0;
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+/* Code Editor & Console */
+.editor-layout {
+  display: grid;
+  grid-template-columns: 1.3fr 0.7fr;
+  gap: 16px;
+}
+.editor {
+  background: #0f172a;
+  color: #f8fafc;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid #1e293b;
+}
+.editor-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  background: #1e293b;
+  border-bottom: 1px solid #334155;
+  font-size: 13px;
+  font-weight: 600;
+}
+.editor textarea {
+  width: 100%;
+  height: 330px;
+  background: #0f172a;
+  color: #f8fafc;
+  border: 0;
+  resize: vertical;
+  padding: 16px;
+  font: 13px/1.65 var(--font-mono);
+  outline: none;
+}
+.output {
+  background: #0f172a;
+  color: #cbd5e1;
+  min-height: 110px;
+  padding: 14px;
+  border-radius: var(--radius-sm);
+  font: 12px/1.65 var(--font-mono);
+  white-space: pre-wrap;
+  border: 1px solid #1e293b;
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.tabs button {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  padding: 7px 13px;
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  font-weight: 500;
+  font-size: 13px;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+.tabs button:hover {
+  background: var(--bg-subtle);
+  color: var(--text);
+}
+.tabs button.active {
+  background: var(--primary-light);
+  border-color: var(--primary-subtle);
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.empty {
+  padding: 36px;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+/* Modal Dialog */
+.modal-back {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.5);
+  display: grid;
+  place-items: center;
+  z-index: 100;
+  padding: 18px;
+}
+.modal {
+  width: min(520px, 100%);
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: 22px;
+  box-shadow: var(--shadow-lg);
+}
+.modal h2 {
+  margin: 0 0 16px;
+  font-size: 19px;
+}
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+/* Toast Notification */
+.toast-root {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 200;
+  pointer-events: none;
+}
+.toast {
+  background: #0f172a;
+  color: #ffffff;
+  padding: 10px 16px;
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-md);
+  font-size: 13px;
+  font-weight: 500;
+  border-left: 3px solid var(--primary);
+}
+
+.mobile-menu { display: none; }
+.rank { font-weight: 700; color: var(--primary); }
+.streak {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.streak .flame {
+  display: inline-block;
+}
+.calendar { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+.day { background: var(--bg-subtle); border-radius: 4px; height: 26px; }
+.day.done { background: #86efac; }
+.day.today { outline: 2px solid var(--primary); }
+.notice {
+  padding: 13px;
+  background: var(--primary-light);
+  border: 1px solid var(--primary-subtle);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-size: 13px;
+}
+.notice b {
+  color: var(--primary);
+}
+.profile-row { display: flex; align-items: center; gap: 14px; }
+.big-avatar {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: #ffffff;
+  display: grid;
+  place-items: center;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+@media(max-width: 1080px) {
+  .app { grid-template-columns: 210px 1fr; }
+  .stats { grid-template-columns: repeat(2, 1fr); }
+  .two, .editor-layout { grid-template-columns: 1fr; }
+}
+@media(max-width: 768px) {
+  .login-wrap { grid-template-columns: 1fr; }
+  .login-art { display: none; }
+  .app { display: block; }
+  .sidebar {
+    position: fixed;
+    z-index: 80;
+    left: -260px;
+    width: 250px;
+    transition: left 0.2s ease;
+    box-shadow: var(--shadow-lg);
+  }
+  .sidebar.open { left: 0; }
+  .mobile-menu { display: inline-grid; }
+  .topbar { padding: 0 16px; }
+  .content { padding: 18px 16px; }
+  .stats { gap: 10px; }
+  .card { padding: 16px; }
+  .stat-value { font-size: 22px; }
+  .page-head { flex-direction: column; }
+  .three { grid-template-columns: 1fr; }
+  .role-switcher { display: none; }
+}
+
+/* ========================================================
+   HIGH-LEVEL INTERACTIVE & MOVING MOTION SYSTEM
+   ======================================================== */
+
+/* 1. Staggered Entrance Motion for Views & Cards */
+@keyframes cascadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(16px) scale(0.985);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+.stagger-in {
+  animation: cascadeIn 0.38s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* 2. Interactive Spotlight & Elevation for Cards */
+.card {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.24s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.24s ease, border-color 0.2s ease;
+}
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px -4px rgba(0, 113, 188, 0.12), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
+  border-color: #93c5fd;
+}
+.card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(380px circle at var(--mouse-x, -500px) var(--mouse-y, -500px), rgba(0, 113, 188, 0.08), transparent 60%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+.card:hover::after {
+  opacity: 1;
+}
+
+/* 3. Hero Interactive Canvas */
+.hero-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: auto;
+  z-index: 1;
+}
+.login-art {
+  position: relative;
+  overflow: hidden;
+}
+.login-art > div, .login-art > small {
+  position: relative;
+  z-index: 2;
+  pointer-events: none;
+}
+.login-art .brand, .login-art .art-stat {
+  pointer-events: auto;
+}
+
+/* 4. Sliding Gliding Role Switcher */
+.role-switcher {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: var(--bg-subtle);
+  border: 1px solid var(--line);
+  padding: 3px;
+  border-radius: var(--radius-sm);
+  gap: 2px;
+}
+.role-indicator {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  height: calc(100% - 6px);
+  background: var(--panel);
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 113, 188, 0.14), 0 1px 3px rgba(0, 0, 0, 0.06);
+  transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1), width 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+  z-index: 1;
+}
+.role-chip {
+  position: relative;
+  z-index: 2;
+  padding: 5px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  background: transparent;
+  color: var(--text-muted);
+  transition: color 0.18s ease;
+}
+.role-chip:hover {
+  color: var(--text);
+}
+.role-chip.active {
+  background: transparent !important;
+  box-shadow: none !important;
+  color: var(--primary) !important;
+  font-weight: 650 !important;
+}
+
+/* 5. Button Ripple Click Feedback */
+.btn, .demo-chip-btn {
+  position: relative;
+  overflow: hidden;
+}
+.btn-ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.38);
+  transform: scale(0);
+  animation: btnRipple 0.5s ease-out;
+  pointer-events: none;
+}
+@keyframes btnRipple {
+  to {
+    transform: scale(3.5);
+    opacity: 0;
+  }
+}
+
+/* 6. Fluid Energy Wave Shimmer for Progress Bars */
+@keyframes energyShimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+.bar span {
+  background: linear-gradient(90deg, #0071bc 0%, #29abe2 40%, #0071bc 80%, #29abe2 100%);
+  background-size: 200% 100%;
+  animation: energyShimmer 3.2s ease-in-out infinite;
+  transition: width 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* 7. Interactive Physics Activity Bar Chart */
+.activity-wrap {
+  position: relative;
+  height: 140px;
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  padding: 18px 6px 8px;
+}
+.activity-bar {
+  background: var(--primary);
+  border-radius: 4px 4px 0 0;
+  transform-origin: bottom;
+  animation: barRise 0.65s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.18s ease, opacity 0.2s ease;
+  cursor: pointer;
+}
+@keyframes barRise {
+  from { transform: scaleY(0); }
+  to { transform: scaleY(1); }
+}
+.activity-bar:hover {
+  background: #29abe2;
+  transform: scaleY(1.08) scaleX(1.06);
+}
+.activity-wrap:hover .activity-bar:not(:hover) {
+  opacity: 0.55;
+}
+.chart-tooltip {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: #0f172a;
+  color: #ffffff;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, -6px) scale(0.95);
+  transition: opacity 0.18s ease, transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 20;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  border: 1px solid #334155;
+  white-space: nowrap;
+}
+.chart-tooltip.active {
+  opacity: 1;
+  transform: translate(-50%, -18px) scale(1);
+}
+.chart-tooltip small {
+  display: block;
+  color: #94a3b8;
+  font-size: 10px;
+  font-weight: 400;
+}
+
+/* 8. Organic Streak Flame Motion */
+.streak-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.flame-svg {
+  width: 28px;
+  height: 28px;
+  filter: drop-shadow(0 2px 8px rgba(245, 158, 11, 0.4));
+  animation: flameWiggle 2.4s ease-in-out infinite alternate;
+  transform-origin: 50% 90%;
+}
+@keyframes flameWiggle {
+  0% { transform: scale(1) rotate(-1deg); }
+  50% { transform: scale(1.08, 1.04) rotate(2deg); }
+  100% { transform: scale(0.97, 1.06) rotate(-2deg); }
+}
+
+/* 9. Sequential Test Runner Animation */
+.test-suite {
+  display: grid;
+  gap: 8px;
+  margin-top: 10px;
+}
+.test-case-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: var(--bg-subtle);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  font-size: 12px;
+  animation: cascadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.test-case-item.pass {
+  border-color: var(--green-border);
+  background: var(--green-bg);
+  color: var(--green);
+}
+.test-case-item.fail {
+  border-color: var(--red-border);
+  background: var(--red-bg);
+  color: var(--red);
+}
+
+/* 10. Spring Modal Pop-In */
+@keyframes modalSpring {
+  0% {
+    opacity: 0;
+    transform: scale(0.92) translateY(12px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+.modal {
+  animation: modalSpring 0.28s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* 11. Toast Progress Bar */
+.toast {
+  position: relative;
+  overflow: hidden;
+  animation: cascadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.toast-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  background: var(--primary);
+  width: 100%;
+  animation: toastDrain 2.6s linear forwards;
+}
+@keyframes toastDrain {
+  from { width: 100%; }
+  to { width: 0%; }
+}
+
+/* ========================================================
+   INTERACTIVE LEADERBOARD SYSTEM (Podium, Duel, Scopes)
+   ======================================================== */
+
+.podium-wrap {
+  display: grid;
+  grid-template-columns: 1fr 1.08fr 1fr;
+  align-items: flex-end;
+  gap: 16px;
+  margin: 14px 0 22px;
+}
+.podium-card {
+  position: relative;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 22px 16px 18px;
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease, border-color 0.2s ease;
+  overflow: hidden;
+}
+.podium-card:hover {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 14px 30px -4px rgba(0, 113, 188, 0.16);
+  border-color: #93c5fd;
+}
+.podium-card.rank-1 {
+  min-height: 225px;
+  border-color: #f59e0b;
+  box-shadow: 0 8px 24px -4px rgba(245, 158, 11, 0.22);
+  background: linear-gradient(180deg, rgba(254, 243, 199, 0.28) 0%, var(--panel) 40%);
+}
+.podium-card.rank-2 {
+  min-height: 195px;
+  border-color: #94a3b8;
+  background: linear-gradient(180deg, rgba(241, 245, 249, 0.6) 0%, var(--panel) 40%);
+}
+.podium-card.rank-3 {
+  min-height: 175px;
+  border-color: #d97706;
+  background: linear-gradient(180deg, rgba(254, 215, 170, 0.28) 0%, var(--panel) 40%);
+}
+.podium-badge-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  margin: 0 auto 10px;
+  display: grid;
+  place-items: center;
+  font-size: 22px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+.rank-1 .podium-badge-icon {
+  background: linear-gradient(135deg, #fef08a 0%, #f59e0b 100%);
+  color: #78350f;
+  animation: crownGleam 2.8s ease-in-out infinite alternate;
+}
+@keyframes crownGleam {
+  0% { transform: scale(1) rotate(-2deg); }
+  100% { transform: scale(1.1) rotate(2deg); filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.5)); }
+}
+.rank-2 .podium-badge-icon {
+  background: linear-gradient(135deg, #f8fafc 0%, #cbd5e1 100%);
+  color: #334155;
+}
+.rank-3 .podium-badge-icon {
+  background: linear-gradient(135deg, #fed7aa 0%, #f97316 100%);
+  color: #7c2d12;
+}
+.podium-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  margin: 0 auto 8px;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  color: #fff;
+  font-size: 15px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+.podium-step-num {
+  position: absolute;
+  top: 10px;
+  left: 14px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+}
+.rank-1 .podium-step-num { background: #fef3c7; color: #b45309; }
+.rank-2 .podium-step-num { background: #f1f5f9; color: #475569; }
+.rank-3 .podium-step-num { background: #ffedd5; color: #c2410c; }
+
+/* Gap Closer Target Banner */
+.lb-target-banner {
+  background: linear-gradient(135deg, var(--primary-light) 0%, #f0f9ff 100%);
+  border: 1px solid var(--primary-subtle);
+  border-radius: var(--radius-md);
+  padding: 14px 20px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  position: relative;
+  overflow: hidden;
+}
+.lb-target-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.lb-target-progress-wrap {
+  flex: 1;
+  max-width: 320px;
+}
+
+/* Leaderboard Filter Toolbar */
+.lb-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+.lb-tabs {
+  display: inline-flex;
+  background: var(--bg-subtle);
+  border: 1px solid var(--line);
+  padding: 3px;
+  border-radius: var(--radius-sm);
+  gap: 2px;
+}
+.lb-tab-btn {
+  padding: 6px 14px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  background: transparent;
+  color: var(--text-muted);
+  transition: all 0.18s ease;
+}
+.lb-tab-btn:hover {
+  color: var(--text);
+}
+.lb-tab-btn.active {
+  background: var(--panel);
+  color: var(--primary);
+  box-shadow: var(--shadow-sm);
+}
+.lb-search-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  max-width: 380px;
+}
+
+/* Interactive Table Row Hover & Actions */
+.lb-row {
+  transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.15s ease;
+}
+.lb-row:hover {
+  background: var(--bg-subtle) !important;
+  transform: translateX(3px);
+}
+.lb-row.is-you {
+  background: var(--primary-light) !important;
+  border-left: 3px solid var(--primary);
+  font-weight: 600;
+}
+.trend-up {
+  color: var(--green);
+  font-size: 11px;
+  font-weight: 700;
+}
+.trend-down {
+  color: var(--red);
+  font-size: 11px;
+  font-weight: 700;
+}
+.trend-same {
+  color: var(--text-subtle);
+  font-size: 11px;
+  font-weight: 600;
+}
+.lb-student-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.lb-avatar-mini {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-size: 11px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.lb-action-btns {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  opacity: 0.85;
+}
+.lb-row:hover .lb-action-btns {
+  opacity: 1;
+}
+
+/* Head-to-Head Comparison Modal */
+.duel-wrap {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 16px;
+  margin: 16px 0 22px;
+  padding: 16px;
+  background: var(--bg-subtle);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--line);
+}
+.duel-player {
+  text-align: center;
+}
+.duel-vs {
+  font-weight: 900;
+  font-size: 14px;
+  color: var(--primary);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--panel);
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-sm);
+}
+.stat-duel-row {
+  display: grid;
+  grid-template-columns: 85px 1fr 85px;
+  align-items: center;
+  gap: 12px;
+  margin: 12px 0;
+  font-size: 12px;
+}
+.duel-bar-split {
+  height: 8px;
+  display: flex;
+  background: var(--line);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+.duel-bar-you {
+  background: var(--primary);
+  transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.duel-bar-them {
+  background: #f59e0b;
+  transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN VIEW -->
+<div id="login" class="login-wrap">
+  <section class="login-art">
+    <canvas id="heroCanvas" class="hero-canvas"></canvas>
+    <div>
+      <div class="sub-badge" style="color:#93c5fd;">SOFTWARE • SERVICES • EDUCATION</div>
+      <div class="brand" style="margin-top:14px;">
+        <div class="brand-logo-wrap" style="width:44px;height:44px;">
+          <svg class="ist-logo-svg" style="width:44px;height:44px;" viewBox="0 0 100 100" fill="none">
+            <polygon points="55.8,26.0 55.8,50.0 35.0,62.0 14.2,50.0 14.2,26.0 35.0,14.0" stroke="#29abe2" stroke-width="4" stroke-linejoin="round" fill="rgba(41, 171, 226, 0.2)"/>
+            <text x="35" y="43" font-family="'Inter', sans-serif" font-weight="900" font-size="15" fill="#29abe2" text-anchor="middle">I</text>
+            <polygon points="85.8,26.0 85.8,50.0 65.0,62.0 44.2,50.0 44.2,26.0 65.0,14.0" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" fill="rgba(255, 255, 255, 0.2)"/>
+            <text x="65" y="43" font-family="'Inter', sans-serif" font-weight="900" font-size="15" fill="#ffffff" text-anchor="middle">S</text>
+            <polygon points="70.8,52.0 70.8,76.0 50.0,88.0 29.2,76.0 29.2,52.0 50.0,40.0" stroke="#93c5fd" stroke-width="4" stroke-linejoin="round" fill="rgba(147, 197, 253, 0.25)"/>
+            <text x="50" y="69" font-family="'Inter', sans-serif" font-weight="900" font-size="15" fill="#ffffff" text-anchor="middle">T</text>
+          </svg>
+        </div>
+        <div>
+          <div style="font-size:17px;font-weight:900;letter-spacing:0.5px;color:#ffffff;line-height:1.15;">INOVATE SOLUTION</div>
+          <div style="font-size:11px;font-weight:700;letter-spacing:1.8px;color:#93c5fd;line-height:1.2;">TECHNOLOGY <span style="color:#ffffff;font-size:10px;font-weight:600;letter-spacing:1px;">· SKILLRACK</span></div>
+        </div>
+      </div>
+
+      <div style="margin-top: 10vh;">
+        <h1>Technology that moves your learning forward.</h1>
+        <p>A practical coding practice platform designed around real college requirements. Learn every day, measure progress, and build for the future with IST.</p>
+        <div class="art-stat">
+          <div><strong>3</strong><span>Languages</span></div>
+          <div><strong>4</strong><span>User roles</span></div>
+          <div><strong>24/7</strong><span>Practice & judge</span></div>
+        </div>
+      </div>
+    </div>
+    <small style="color: #bfdbfe; font-size:12px;">© 2026 Inovate Solution Technology · Enterprise Learning Platform</small>
+  </section>
+
+  <section class="login-box">
+    <div class="brand">
+      <div class="brand-logo-wrap">
+        <svg class="ist-logo-svg" viewBox="0 0 100 100" fill="none">
+          <polygon class="hex-cyan" points="55.8,26.0 55.8,50.0 35.0,62.0 14.2,50.0 14.2,26.0 35.0,14.0" stroke="#29abe2" stroke-width="3.8" stroke-linejoin="round"/>
+          <text x="35" y="42" font-family="'Inter', sans-serif" font-weight="900" font-size="14" fill="#29abe2" text-anchor="middle">I</text>
+          <polygon class="hex-blue" points="85.8,26.0 85.8,50.0 65.0,62.0 44.2,50.0 44.2,26.0 65.0,14.0" stroke="#0071bc" stroke-width="3.8" stroke-linejoin="round"/>
+          <text x="65" y="42" font-family="'Inter', sans-serif" font-weight="900" font-size="14" fill="#0071bc" text-anchor="middle">S</text>
+          <polygon class="hex-purple" points="70.8,52.0 70.8,76.0 50.0,88.0 29.2,76.0 29.2,52.0 50.0,40.0" stroke="#704fe7" stroke-width="3.8" stroke-linejoin="round"/>
+          <text x="50" y="68" font-family="'Inter', sans-serif" font-weight="900" font-size="14" fill="#704fe7" text-anchor="middle">T</text>
+        </svg>
+      </div>
+      <div>
+        <div class="brand-title"><span style="color:#704fe7;">INOVATE SOLUTION</span></div>
+        <div class="brand-subtitle"><span style="color:#0071bc;">TECHNOLOGY</span> <span style="color:#29abe2;">· SKILLRACK</span></div>
+      </div>
+    </div>
+
+    <div style="margin-top:30px;">
+      <div class="sub-badge">WELCOME TO SKILLRACK</div>
+      <h2>Sign in to your workspace</h2>
+      <p class="muted">Access your problems, code judge, and institutional management.</p>
+    </div>
+
+    <!-- Quick Demo Accounts One-Click Selector -->
+    <div style="margin-top:20px;">
+      <small style="font-weight:700;color:var(--text-muted);font-size:11px;text-transform:uppercase;letter-spacing:0.8px;">Quick Demo Accounts (Click to auto-fill & login)</small>
+      <div class="demo-role-chips">
+        <button type="button" class="demo-chip-btn" onclick="quickLogin('student')">
+          <strong>Alex Morgan</strong>
+          <span>Student · CSE</span>
+        </button>
+        <button type="button" class="demo-chip-btn" onclick="quickLogin('faculty')">
+          <strong>Dr. Priya Kumar</strong>
+          <span>Faculty Member</span>
+        </button>
+        <button type="button" class="demo-chip-btn" onclick="quickLogin('admin')">
+          <strong>Karthik Raman</strong>
+          <span>College Admin</span>
+        </button>
+        <button type="button" class="demo-chip-btn" onclick="quickLogin('super')">
+          <strong>Platform Admin</strong>
+          <span>Super Admin</span>
+        </button>
+      </div>
+    </div>
+
+    <form id="loginForm">
+      <div class="field">
+        <label>Email or roll number</label>
+        <input id="loginId" placeholder="e.g. student@demo.com" required value="student@demo.com">
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input id="loginPass" type="password" placeholder="Enter password" required value="demo123">
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin:12px 0 20px;">
+        <label class="muted" style="font-size:13px;display:flex;align-items:center;gap:6px;cursor:pointer;">
+          <input type="checkbox" checked style="accent-color:var(--primary);"> Remember me
+        </label>
+        <a href="#" onclick="toast('Please contact your administrator to reset demo password.');return false;" style="color:var(--primary);text-decoration:none;font-weight:600;font-size:13px;">Forgot password?</a>
+      </div>
+      <button class="btn full" style="padding:11px 16px;font-size:14px;">Sign in to Workspace →</button>
+    </form>
+    <div class="notice" style="margin-top:20px;font-size:12px;">
+      Demo access: password is <b>demo123</b> for all accounts.
+    </div>
+  </section>
+</div>
+
+<!-- PLATFORM WORKSPACE VIEW -->
+<div id="app" class="app hidden">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="brand-logo-wrap">
+        <svg class="ist-logo-svg" viewBox="0 0 100 100" fill="none">
+          <polygon class="hex-cyan" points="55.8,26.0 55.8,50.0 35.0,62.0 14.2,50.0 14.2,26.0 35.0,14.0" stroke="#29abe2" stroke-width="3.8" stroke-linejoin="round"/>
+          <text x="35" y="42" font-family="'Inter', sans-serif" font-weight="900" font-size="14" fill="#29abe2" text-anchor="middle">I</text>
+          <polygon class="hex-blue" points="85.8,26.0 85.8,50.0 65.0,62.0 44.2,50.0 44.2,26.0 65.0,14.0" stroke="#0071bc" stroke-width="3.8" stroke-linejoin="round"/>
+          <text x="65" y="42" font-family="'Inter', sans-serif" font-weight="900" font-size="14" fill="#0071bc" text-anchor="middle">S</text>
+          <polygon class="hex-purple" points="70.8,52.0 70.8,76.0 50.0,88.0 29.2,76.0 29.2,52.0 50.0,40.0" stroke="#704fe7" stroke-width="3.8" stroke-linejoin="round"/>
+          <text x="50" y="68" font-family="'Inter', sans-serif" font-weight="900" font-size="14" fill="#704fe7" text-anchor="middle">T</text>
+        </svg>
+      </div>
+      <div>
+        <div class="brand-title"><span style="color:#704fe7;">INOVATE SOLUTION</span></div>
+        <div class="brand-subtitle"><span style="color:#0071bc;">TECHNOLOGY</span> <span style="color:#29abe2;">· SKILLRACK</span></div>
+      </div>
+    </div>
+    <div class="nav-label">Navigation</div>
+    <nav class="nav" id="nav"></nav>
+    <div class="side-bottom">
+      <div class="user-mini">
+        <div class="avatar" id="sideAvatar">A</div>
+        <div>
+          <strong id="sideName" style="color:var(--text);font-size:13px;">Alex Morgan</strong>
+          <small id="sideRole">Student</small>
+        </div>
+      </div>
+      <button class="btn ghost small full" style="margin-top:12px;" onclick="logout()">↪ Sign out</button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div class="top-left">
+        <button class="icon-btn mobile-menu" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
+        <div>
+          <span class="sub-badge" id="roleLabel" style="margin:0;">STUDENT WORKSPACE</span>
+          <h3 id="topTitle" style="font-size:17px;font-weight:700;">Dashboard</h3>
+        </div>
+      </div>
+      <div class="top-actions">
+        <!-- 1-Click Role Switcher -->
+        <div class="role-switcher" id="roleSwitcher" title="Switch Role Perspective">
+          <div class="role-indicator" id="roleIndicator"></div>
+<button class="role-chip" data-role="student" onclick="switchRole('student')">Student</button>
+          <button class="role-chip" data-role="faculty" onclick="switchRole('faculty')">Faculty</button>
+          <button class="role-chip" data-role="admin" onclick="switchRole('admin')">Admin</button>
+          <button class="role-chip" data-role="super" onclick="switchRole('super')">Super</button>
+        </div>
+
+        <button class="icon-btn" onclick="toggleTheme()" title="Toggle Light / Dark Theme">◐</button>
+        <div class="avatar" id="topAvatar" onclick="render('My Profile')" style="cursor:pointer;" title="View Profile">A</div>
+      </div>
+    </header>
+
+    <div class="content">
+      <div id="view"></div>
+    </div>
+  </main>
+</div>
+
+
+
+<div id="modalRoot"></div>
+<div id="toastRoot" class="toast-root"></div>
+
+<script>
+const roles = {
+  student: {
+    name: 'Student',
+    email: 'student@demo.com',
+    person: 'Alex Morgan',
+    items: [
+      ['Dashboard','▦'],
+      ['Daily Challenge','☀'],
+      ['Problem Bank','▤'],
+      ['Topic Practice','◈'],
+      ['Code Editor','⌘'],
+      ['My Submissions','↗'],
+      ['Leaderboard','♛'],
+      ['My Progress','▥'],
+      ['My Profile','◎'],
+      ['Settings','⚙']
+    ]
+  },
+  faculty: {
+    name: 'Faculty',
+    email: 'faculty@demo.com',
+    person: 'Dr. Priya Kumar',
+    items: [
+      ['Dashboard','▦'],
+      ['Student Management','♙'],
+      ['Problem Assignment','▤'],
+      ['Scheduled Tests','◷'],
+      ['Batch Performance','▥'],
+      ['Weak Students','⚑'],
+      ['Submission Reports','↗'],
+      ['Analytics','◫'],
+      ['My Profile','◎'],
+      ['Settings','⚙']
+    ]
+  },
+  admin: {
+    name: 'College Admin',
+    email: 'admin@demo.com',
+    person: 'Karthik Raman',
+    items: [
+      ['Dashboard','▦'],
+      ['Department Management','▦'],
+      ['Batch Management','▤'],
+      ['Student Management','♙'],
+      ['Faculty Management','♟'],
+      ['Bulk Student Import','⇧'],
+      ['College Reports','◫'],
+      ['Settings','⚙']
+    ]
+  },
+  super: {
+    name: 'Super Admin',
+    email: 'super@demo.com',
+    person: 'Platform Admin',
+    items: [
+      ['Dashboard','▦'],
+      ['College Management','▦'],
+      ['User Management','♙'],
+      ['Problem Bank Management','▤'],
+      ['Licence Management','◷'],
+      ['Platform Analytics','◫'],
+      ['System Monitoring','⌁'],
+      ['Settings','⚙']
+    ]
+  }
+};
+
+let role = 'student', current = 'Dashboard', data = loadData();
+
+function loadData() {
+  try {
+    const saved = JSON.parse(localStorage.getItem('ccData'));
+    if (saved && saved.problems && saved.students) return saved;
+  } catch(e) {}
+
+  return {
+    points: 420,
+    solved: 18,
+    streak: 6,
+    submissions: [
+      ['Two Sum', 'Python 3', 'Accepted', '20', 'Just now'],
+      ['Reverse a String', 'Java', 'Accepted', '15', 'Yesterday'],
+      ['Maximum Subarray', 'Python 3', 'Wrong Answer', '0', '12 Nov']
+    ],
+    students: [
+      ['STU001', 'Alex Morgan', 'CSE · A', '86%', 'Active'],
+      ['STU002', 'Jamie Lee', 'IT · A', '76%', 'Active'],
+      ['STU003', 'Sam Wilson', 'CSE · B', '42%', 'Needs support'],
+      ['STU004', 'Taylor Kim', 'ECE · A', '91%', 'Active'],
+      ['STU005', 'Riya Patel', 'IT · B', '48%', 'Needs support'],
+      ['STU006', 'Noah Davis', 'CSE · A', '51%', 'Needs support']
+    ],
+    faculty: [
+      ['FAC001', 'Dr. Priya Kumar', 'CSE · Head of Dept', 'Active'],
+      ['FAC002', 'Prof. Arun Das', 'IT · Data Structures', 'Active'],
+      ['FAC003', 'Prof. Meena S', 'ECE · Algorithms', 'Active']
+    ],
+    colleges: [
+      ['ABC Engineering College', 'Madurai', 'Active', '2027-06-30'],
+      ['City Institute of Technology', 'Chennai', 'Active', '2027-03-31'],
+      ['Greenfield College of Tech', 'Coimbatore', 'Pending', '2026-12-31']
+    ],
+    departments: [
+      ['D01', 'Computer Science and Engineering', 'CSE · 240 Students', 'Active'],
+      ['D02', 'Information Technology', 'IT · 180 Students', 'Active'],
+      ['D03', 'Electronics and Communication', 'ECE · 160 Students', 'Active']
+    ],
+    batches: [
+      ['2024-A', 'CSE', '2024', '48 students'],
+      ['2024-B', 'IT', '2024', '42 students'],
+      ['2025-A', 'ECE', '2025', '50 students']
+    ],
+    problems: [
+      ['Two Sum', 'Easy', 'Arrays', 20],
+      ['Reverse a String', 'Easy', 'Strings', 15],
+      ['Maximum Subarray', 'Medium', 'Arrays', 30],
+      ['Valid Parentheses', 'Medium', 'Data Structures', 25],
+      ['Binary Search', 'Easy', 'Searching', 20],
+      ['Merge Two Sorted Lists', 'Easy', 'Data Structures', 25],
+      ['Longest Substring Without Repeating Characters', 'Medium', 'Strings', 35]
+    ]
+  };
+}
+
+function save() {
+  localStorage.setItem('ccData', JSON.stringify(data));
+}
+
+function toast(s) {
+  const r = document.getElementById('toastRoot');
+  const div = document.createElement('div');
+  div.className = 'toast';
+  div.innerHTML = esc(s) + '<div class="toast-bar"></div>';
+  r.appendChild(div);
+  setTimeout(() => {
+    div.style.transition = 'opacity 0.25s ease, transform 0.25s ease';
+    div.style.opacity = '0';
+    div.style.transform = 'translateY(12px) scale(0.95)';
+    setTimeout(() => div.remove(), 260);
+  }, 2600);
+}
+
+function esc(s) {
+  return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+/* Quick Demo Login */
+function quickLogin(targetRole) {
+  if (roles[targetRole]) {
+    document.getElementById('loginId').value = roles[targetRole].email;
+    document.getElementById('loginPass').value = 'demo123';
+    role = targetRole;
+    localStorage.setItem('ccRole', role);
+    openApp();
+    toast('Signed in as ' + roles[role].person + ' (' + roles[role].name + ')');
+  }
+}
+
+document.getElementById('loginForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const email = document.getElementById('loginId').value.trim().toLowerCase();
+  const pass = document.getElementById('loginPass').value;
+  const found = Object.keys(roles).find(k => roles[k].email === email);
+  if (!found || pass !== 'demo123') {
+    toast('Invalid demo credentials. Use student@demo.com, faculty@demo.com, admin@demo.com or super@demo.com with password: demo123');
+    return;
+  }
+  role = found;
+  localStorage.setItem('ccRole', role);
+  openApp();
+  toast('Welcome back, ' + roles[role].person + '!');
+});
+
+function openApp() {
+  document.getElementById('login').classList.add('hidden');
+  document.getElementById('app').classList.remove('hidden');
+  updateRoleUI();
+  buildNav();
+  render('Dashboard');
+}
+
+function switchRole(newRole) {
+  if (roles[newRole]) {
+    role = newRole;
+    localStorage.setItem('ccRole', role);
+    updateRoleUI();
+    buildNav();
+    render('Dashboard');
+    toast('Switched to ' + roles[role].name + ' perspective');
+  }
+}
+
+function updateRoleIndicator() {
+  const activeBtn = document.querySelector('.role-chip.active');
+  const indicator = document.getElementById('roleIndicator');
+  if (activeBtn && indicator) {
+    indicator.style.transform = `translateX(${activeBtn.offsetLeft - 3}px)`;
+    indicator.style.width = `${activeBtn.offsetWidth}px`;
+  }
+}
+
+function updateRoleUI() {
+  const r = roles[role];
+  document.getElementById('sideName').textContent = r.person;
+  document.getElementById('sideRole').textContent = r.name;
+  document.getElementById('sideAvatar').textContent = r.person[0];
+  document.getElementById('topAvatar').textContent = r.person[0];
+  document.getElementById('roleLabel').textContent = r.name.toUpperCase() + ' WORKSPACE';
+
+  document.querySelectorAll('.role-chip').forEach(chip => {
+    chip.classList.toggle('active', chip.dataset.role === role);
+  });
+  setTimeout(updateRoleIndicator, 20);
+}
+
+function logout() {
+  localStorage.removeItem('ccRole');
+  document.getElementById('app').classList.add('hidden');
+  document.getElementById('login').classList.remove('hidden');
+  document.getElementById('loginPass').value = 'demo123';
+  toast('Signed out from workspace.');
+  
+}
+
+function buildNav() {
+  document.getElementById('nav').innerHTML = roles[role].items.map(([n, i]) => `
+    <button class="${current === n ? 'active' : ''}" onclick="render('${n}')">
+      <span class="ico">${i}</span>
+      <span>${n}</span>
+    </button>
+  `).join('');
+}
+
+function head(title, desc, action = '') {
+  return `
+    <div class="page-head">
+      <div>
+        <h1>${title}</h1>
+        <p>${desc}</p>
+      </div>
+      <div>${action}</div>
+    </div>
+  `;
+}
+
+function stats(items) {
+  return `
+    <div class="grid stats">
+      ${items.map(([l, v, ic, sub]) => `
+        <div class="card">
+          <div class="stat-top">
+            <span>${l}</span>
+            <span class="stat-icon">${ic}</span>
+          </div>
+          <div class="stat-value" data-value="${v}">${v}</div>
+          <div class="positive">${sub}</div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+function table(headers, rows) {
+  return `
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>${headers.map(h => `<th>${h}</th>`).join('')}</tr>
+        </thead>
+        <tbody>
+          ${rows.map(row => `<tr>${row.map(x => `<td>${x}</td>`).join('')}</tr>`).join('')}
+        </tbody>
+      </table>
+    </div>
+  `;
+}
+
+
+function render(page) {
+  current = page;
+  document.getElementById('topTitle').textContent = page;
+  buildNav();
+  document.getElementById('sidebar').classList.remove('open');
+  const v = document.getElementById('view');
+  v.innerHTML = pageContent(page);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  // Staggered cascade entrance for interactive feel
+  v.querySelectorAll('.card, .page-head, .table-wrap, .tabs, .editor-layout').forEach((el, i) => {
+    el.classList.add('stagger-in');
+    el.style.animationDelay = (i * 0.045) + 's';
+  });
+
+  setTimeout(updateRoleIndicator, 30);
+}
+
+function pageContent(p) {
+  if (p === 'Dashboard') return dashboard();
+  if (p === 'Daily Challenge') return daily();
+  if (p === 'Problem Bank' || p === 'Problem Bank Management') return problems();
+  if (p === 'Topic Practice') return topics();
+  if (p === 'Code Editor') return editor();
+  if (p === 'My Submissions' || p === 'Submission Reports') return submissions();
+  if (p === 'Leaderboard') return leaderboard();
+  if (p === 'My Progress' || p === 'Analytics' || p === 'College Reports' || p === 'Platform Analytics' || p === 'Batch Performance') return analytics(p);
+  if (p === 'My Profile') return profile();
+  if (p === 'Settings') return settings();
+  if (p === 'Student Management' || p === 'User Management') return management('Students', data.students);
+  if (p === 'Faculty Management') return management('Faculty', data.faculty);
+  if (p === 'College Management') return management('Colleges', data.colleges);
+  if (p === 'Department Management') return management('Departments', data.departments);
+  if (p === 'Batch Management') return management('Batches', data.batches);
+  if (p === 'Licence Management') return management('College Licences', data.colleges);
+  if (p === 'Problem Assignment') return assignment();
+  if (p === 'Scheduled Tests') return tests();
+  if (p === 'Weak Students') return weak();
+  if (p === 'Bulk Student Import') return bulk();
+  if (p === 'System Monitoring') return monitoring();
+  return dashboard();
+}
+
+function dashboard() {
+  if (role === 'student') {
+    return head('Good afternoon, Alex 👋', 'Ready to make progress? Your coding journey continues today.') +
+      stats([
+        ['Problems solved', String(data.solved), '⌘', '↑ 3 this week'],
+        ['Total points', String(data.points), '✦', 'Keep it up'],
+        ['Current streak', data.streak + ' days', '♨', 'Personal best: 12 days'],
+        ['Accuracy', '86%', '◎', '↑ 4% this month']
+      ]) +
+      `<div class="grid two">
+        <div class="card">
+          <div class="card-head">
+            <h3>Continue your practice</h3>
+            <button class="btn secondary small" onclick="render('Problem Bank')">View all</button>
+          </div>
+          ${problemRows(3)}
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <h3>Weekly activity</h3>
+            <span class="pill blue">This week</span>
+          </div>
+          ${activity()}
+          <div class="notice" style="margin-top:17px;">
+            ${flameIcon()} You are on a <b>${data.streak}-day streak</b>. Solve one problem today to keep it going.
+          </div>
+        </div>
+        <div class="card">
+          <h3>Topic progress</h3>
+          ${topicBars()}
+        </div>
+        <div class="card">
+          <h3>Today's challenge</h3>
+          <div class="notice">
+            <b>Find the Missing Number</b>
+            <p style="margin:4px 0 10px;">Easy · Arrays · 20 points</p>
+            <button class="btn small" onclick="render('Daily Challenge')">Start challenge →</button>
+          </div>
+          <p class="muted" style="margin-top:15px;">College rank <b>#3</b> · Batch rank <b>#1</b></p>
+        </div>
+      </div>`;
+  }
+
+  if (role === 'faculty') {
+    return head('Faculty overview', 'Monitor learning progress across your assigned batches.') +
+      stats([
+        ['Active students', '128', '♙', 'Across 3 batches'],
+        ['Average score', '74%', '◎', '↑ 6% this month'],
+        ['Problems assigned', '42', '▤', '12 pending'],
+        ['Tests scheduled', '3', '◷', 'Next: 20 Nov']
+      ]) +
+      `<div class="grid two">
+        <div class="card">
+          <h3>Student performance</h3>
+          ${activity()}
+          <p class="muted" style="margin-top:10px;">Weekly submissions across assigned batches</p>
+        </div>
+        <div class="card">
+          <h3>Students needing support</h3>
+          ${weakList()}
+        </div>
+        <div class="card">
+          <h3>Recent submissions</h3>
+          ${table(['Student','Problem','Result'],[
+            ['Alex Morgan','Two Sum','<span class="pill">Accepted</span>'],
+            ['Sam Wilson','Arrays Basics','<span class="pill bad">Wrong answer</span>'],
+            ['Jamie Lee','Reverse String','<span class="pill">Accepted</span>']
+          ])}
+        </div>
+        <div class="card">
+          <h3>Quick actions</h3>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;">
+            <button class="btn" onclick="render('Problem Assignment')">＋ Assign problem</button>
+            <button class="btn secondary" onclick="render('Scheduled Tests')">Create test</button>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  if (role === 'admin') {
+    return head('College overview', 'Manage your institution and track coding engagement.') +
+      stats([
+        ['Total students', '1,240', '♙', 'Across 24 batches'],
+        ['Faculty members', '48', '♟', 'Active accounts'],
+        ['Departments', '6', '▦', 'All configured'],
+        ['Active batches', '24', '▤', 'Current academic year']
+      ]) +
+      `<div class="grid two">
+        <div class="card">
+          <h3>Department performance</h3>
+          ${topicBars()}
+        </div>
+        <div class="card">
+          <h3>Recent student activity</h3>
+          ${table(['Student','Batch','Status'], data.students.slice(0, 4).map(s => [s[1], s[2], `<span class="pill">${s[4]}</span>`]))}
+        </div>
+      </div>`;
+  }
+
+  return head('Platform overview', 'A high-level view of colleges and platform operations.') +
+    stats([
+      ['Colleges', '24', '▦', '18 active licences'],
+      ['Students', '18,420', '♙', 'Across all colleges'],
+      ['Faculty', '860', '♟', 'Registered users'],
+      ['Submissions', '2.4M', '⌘', 'This academic year']
+    ]) +
+    `<div class="grid two">
+      <div class="card">
+        <h3>Recently onboarded colleges</h3>
+        ${table(['College','Location','Status'], data.colleges.map(c => [c[0], c[1], `<span class="pill">${c[2]}</span>`]))}
+      </div>
+      <div class="card">
+        <h3>Platform health</h3>
+        <p style="margin-bottom:6px;">API availability <b style="float:right;">99.8%</b></p>
+        <div class="bar" style="margin-bottom:14px;"><span style="width:99.8%;"></span></div>
+        <p style="margin-bottom:6px;">Judge worker pool <b style="float:right;">Healthy</b></p>
+        <div class="bar" style="margin-bottom:14px;"><span style="width:88%;"></span></div>
+        <p style="margin-bottom:6px;">Storage usage <b style="float:right;">62%</b></p>
+        <div class="bar"><span style="width:62%;"></span></div>
+      </div>
+    </div>`;
+}
+
+function flameIcon() {
+  return `<svg class="flame-svg" viewBox="0 0 24 24" fill="none" style="display:inline-block;vertical-align:middle;margin-right:4px;">
+    <path d="M12 2C9.5 5 8 8 9 11.5C9.5 9 11 8 11.5 8C12 11 10.5 13 10.5 15C10.5 17 12 19 14 19C17 19 18 16 17.5 13C17 10 14.5 7 12 2Z" fill="url(#flameGrad1)"/>
+    <path d="M12 13C11 14 11 15 11.5 16C12 17 13 17.5 14 17C14.5 16.5 14.5 15.5 14 14.5C13.5 13.5 12.5 13 12 13Z" fill="url(#flameGrad2)"/>
+    <defs>
+      <linearGradient id="flameGrad1" x1="12" y1="2" x2="14" y2="19" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#f59e0b"/>
+        <stop offset="1" stop-color="#dc2626"/>
+      </linearGradient>
+      <linearGradient id="flameGrad2" x1="12" y1="13" x2="14" y2="17.5" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#fef08a"/>
+        <stop offset="1" stop-color="#f97316"/>
+      </linearGradient>
+    </defs>
+  </svg>`;
+}
+
+function activity() {
+  const dataPoints = [
+    { day: 'Mon', full: 'Monday', count: 42, height: 48 },
+    { day: 'Tue', full: 'Tuesday', count: 68, height: 76 },
+    { day: 'Wed', full: 'Wednesday', count: 50, height: 56 },
+    { day: 'Thu', full: 'Thursday', count: 85, height: 96 },
+    { day: 'Fri', full: 'Friday', count: 62, height: 70 },
+    { day: 'Sat', full: 'Saturday', count: 95, height: 104 },
+    { day: 'Sun', full: 'Sunday', count: 72, height: 80 }
+  ];
+
+  return `
+    <div class="activity-wrap" id="activityWrap">
+      <div class="chart-tooltip" id="chartTooltip">
+        <span id="tooltipCount">85</span> submissions
+        <small id="tooltipDay">Thursday</small>
+      </div>
+      ${dataPoints.map((d, i) => `
+        <div style="flex:1;text-align:center;display:flex;flex-direction:column;align-items:center;height:100%;justify-content:flex-end;">
+          <div class="activity-bar" 
+               style="height:${d.height}px;width:100%;max-width:32px;animation-delay:${i * 0.05}s;"
+               onmouseenter="showBarTooltip(event, '${d.full}', ${d.count})"
+               onmouseleave="hideBarTooltip()"></div>
+          <small class="muted" style="display:block;margin-top:8px;font-size:11px;font-weight:600;">${d.day}</small>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+function showBarTooltip(e, day, count) {
+  const tip = document.getElementById('chartTooltip');
+  const wrap = document.getElementById('activityWrap');
+  if (!tip || !wrap) return;
+  const rect = e.target.getBoundingClientRect();
+  const wrapRect = wrap.getBoundingClientRect();
+  const x = (rect.left + rect.width / 2) - wrapRect.left;
+  const y = rect.top - wrapRect.top;
+
+  tip.style.left = x + 'px';
+  tip.style.top = y + 'px';
+  document.getElementById('tooltipCount').textContent = count;
+  document.getElementById('tooltipDay').textContent = day;
+  tip.classList.add('active');
+}
+
+function hideBarTooltip() {
+  const tip = document.getElementById('chartTooltip');
+  if (tip) tip.classList.remove('active');
+}
+
+function topicBars() {
+  const topics = [
+    ['Arrays', 78],
+    ['Strings', 65],
+    ['Loops', 92],
+    ['Functions', 48],
+    ['Searching', 35]
+  ];
+  return topics.map(([n, x]) => `
+    <div class="topic">
+      <span>${n}</span>
+      <b>${x}%</b>
+      <div class="bar"><span style="width:${x}%;"></span></div>
+    </div>
+  `).join('');
+}
+
+function problemRows(n = 10) {
+  return data.problems.slice(0, n).map((x, i) => `
+    <div class="problem">
+      <div>
+        <b style="color:var(--text);">${x[0]}</b>
+        <p>${x[2]} · ${x[1]} · ${x[3]} points</p>
+      </div>
+      <button class="btn secondary small" onclick="openProblem(${i})">Solve →</button>
+    </div>
+  `).join('');
+}
+
+function problems() {
+  return head(
+    'Problem bank',
+    'Explore programming challenges and sharpen your skills.',
+    role === 'super' ? `<button class="btn" onclick="openModal('Add problem')">＋ Add problem</button>` : ''
+  ) +
+  `<div class="card">
+    <div class="toolbar">
+      <input id="problemSearch" placeholder="Search problems..." oninput="filterProblems()">
+      <select id="difficulty" onchange="filterProblems()">
+        <option value="">All difficulties</option>
+        <option>Easy</option>
+        <option>Medium</option>
+        <option>Hard</option>
+      </select>
+      <select id="topicFilter" onchange="filterProblems()">
+        <option value="">All topics</option>
+        ${['Arrays', 'Strings', 'Data Structures', 'Searching'].map(x => `<option>${x}</option>`).join('')}
+      </select>
+    </div>
+    <div id="problemList">${problemRows()}</div>
+  </div>`;
+}
+
+function filterProblems() {
+  const q = document.getElementById('problemSearch').value.toLowerCase();
+  const d = document.getElementById('difficulty').value;
+  const t = document.getElementById('topicFilter').value;
+  const list = data.problems.filter(x => x[0].toLowerCase().includes(q) && (!d || x[1] === d) && (!t || x[2] === t));
+  document.getElementById('problemList').innerHTML = list.map((x, i) => `
+    <div class="problem">
+      <div>
+        <b style="color:var(--text);">${x[0]}</b>
+        <p>${x[2]} · ${x[1]} · ${x[3]} points</p>
+      </div>
+      <button class="btn secondary small" onclick="openProblem(${data.problems.indexOf(x)})">Solve →</button>
+    </div>
+  `).join('') || '<div class="empty">No matching problems found.</div>';
+}
+
+function openProblem(i) {
+  const p = data.problems[i];
+  render('Code Editor');
+  document.getElementById('selectedProblem').textContent = p[0];
+  document.getElementById('selectedPoints').textContent = p[3] + ' points';
+}
+
+function topics() {
+  const items = [
+    ['Arrays', '18 problems', '78%', '▦'],
+    ['Strings', '14 problems', '65%', 'Aa'],
+    ['Loops', '12 problems', '92%', '↻'],
+    ['Functions', '10 problems', '48%', 'ƒ'],
+    ['Recursion', '8 problems', '25%', '↗'],
+    ['Sorting', '9 problems', '35%', '⇅'],
+    ['Searching', '8 problems', '35%', '⌕'],
+    ['Data Structures', '16 problems', '52%', '◈'],
+    ['Algorithms', '20 problems', '40%', '⌘']
+  ];
+  return head('Topic practice', 'Build strong fundamentals, one topic at a time.') +
+    `<div class="grid three">
+      ${items.map(x => `
+        <div class="card">
+          <div class="stat-top">
+            <span class="stat-icon">${x[3]}</span>
+            <span class="pill blue">${x[1]}</span>
+          </div>
+          <h3 style="margin:15px 0 5px;">${x[0]}</h3>
+          <p class="muted" style="margin:0 0 10px;">Your progress · ${x[2]}</p>
+          <div class="bar"><span style="width:${x[2]};"></span></div>
+          <button class="btn secondary small full" style="margin-top:16px;" onclick="render('Problem Bank')">Explore topic →</button>
+        </div>
+      `).join('')}
+    </div>`;
+}
+
+function daily() {
+  return head('Daily challenge', 'A new problem every day. Keep your streak alive.') +
+    `<div class="grid two">
+      <div class="card">
+        <span class="pill blue">TODAY · EASY</span>
+        <h2 style="margin:15px 0 6px;">Find the Missing Number</h2>
+        <p class="muted">Arrays · 20 points · Estimated time: 15 min</p>
+        <p style="margin:16px 0;line-height:1.6;">You are given an array containing <code>n</code> distinct numbers in the range <code>0</code> to <code>n</code>. Return the only number in the range that is missing from the array.</p>
+        <h3>Example</h3>
+        <div class="output" style="margin:10px 0 16px;">Input: nums = [3, 0, 1]
+Output: 2</div>
+        <button class="btn" onclick="openProblem(0)">Start challenge →</button>
+      </div>
+      <div class="card">
+        <h3>Your streak</h3>
+        <div class="streak" style="margin:8px 0 4px;"><span class="flame">🔥</span> ${data.streak} days</div>
+        <p class="muted">You are building a consistent habit. Complete today's challenge to continue.</p>
+        <div class="calendar" style="margin:18px 0;">
+          ${Array.from({ length: 28 }, (_, i) => `<div class="day ${i < 17 ? 'done' : ''} ${i === 17 ? 'today' : ''}"></div>`).join('')}
+        </div>
+        <p class="muted" style="font-size:12px;">Last 28 days · Green means challenge completed</p>
+        <div class="notice" style="margin-top:15px;">Complete one challenge today and earn 20 points.</div>
+      </div>
+    </div>`;
+}
+
+function editor() {
+  return head('Code editor', 'Write, run and submit your solution against standardized test cases.') +
+    `<div class="card" style="margin-bottom:16px;">
+      <div class="toolbar" style="margin:0;align-items:center;">
+        <b id="selectedProblem" style="font-size:16px;color:var(--text);">Two Sum</b>
+        <span class="pill blue" id="selectedPoints">20 points</span>
+        <span style="flex:1;"></span>
+        <select id="language" onchange="changeLanguage(this.value)">
+          <option value="python">Python 3</option>
+          <option value="java">Java</option>
+          <option value="c">C</option>
+          <option value="cpp">C++</option>
+          <option value="js">JavaScript</option>
+        </select>
+        <button class="btn ghost small" onclick="resetCode()">Reset code</button>
+      </div>
+    </div>
+    <div class="editor-layout">
+      <div class="editor">
+        <div class="editor-head">
+          <span>⌘ &nbsp; <span id="editorFilename">solution.py</span></span>
+          <span style="font-size:11px;color:#a5b4fc;">● Ready</span>
+        </div>
+        <textarea id="code" spellcheck="false">def solution(nums, target):
+    # Write your solution here
+    seen = {}
+    for i, num in enumerate(nums):
+        diff = target - num
+        if diff in seen:
+            return [seen[diff], i]
+        seen[num] = i
+    return []
+
+print(solution([2, 7, 11, 15], 9))</textarea>
+        <div style="padding:12px 16px;display:flex;gap:10px;background:#141c30;border-top:1px solid #1e2840;">
+          <button class="btn" id="runCodeBtn" onclick="runCode()">▶ Run sample</button>
+          <button class="btn success" id="submitCodeBtn" onclick="submitCode()">✓ Submit to judge</button>
+        </div>
+      </div>
+
+      <div style="display:grid;gap:16px;">
+        <div class="card">
+          <div class="card-head">
+            <h3>Sample input</h3>
+            <span class="pill blue">Test scenario 1</span>
+          </div>
+          <div class="output">nums = [2, 7, 11, 15]
+target = 9</div>
+        </div>
+        <div class="card">
+          <h3>Execution output</h3>
+          <div class="output" id="output">Run your code to see console output here.</div>
+        </div>
+        <div class="card">
+          <h3>Evaluation details</h3>
+          <div id="evalDetails" class="muted">No submission yet. Write code and click submit to judge.</div>
+        </div>
+      </div>
+    </div>`;
+}
+
+function changeLanguage(lang) {
+  const codeEl = document.getElementById('code');
+  const filenameEl = document.getElementById('editorFilename');
+  if (lang === 'python') {
+    filenameEl.textContent = 'solution.py';
+    codeEl.value = `def solution(nums, target):
+    # Write your solution here
+    seen = {}
+    for i, num in enumerate(nums):
+        diff = target - num
+        if diff in seen:
+            return [seen[diff], i]
+        seen[num] = i
+    return []
+
+print(solution([2, 7, 11, 15], 9))`;
+  } else if (lang === 'java') {
+    filenameEl.textContent = 'Solution.java';
+    codeEl.value = `import java.util.*;
+
+class Solution {
+    public static int[] twoSum(int[] nums, int target) {
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < nums.length; i++) {
+            int diff = target - nums[i];
+            if (map.containsKey(diff)) return new int[]{ map.get(diff), i };
+            map.put(nums[i], i);
+        }
+        return new int[]{};
+    }
+}`;
+  } else if (lang === 'c') {
+    filenameEl.textContent = 'solution.c';
+    codeEl.value = `#include <stdio.h>
+
+int* twoSum(int* nums, int numsSize, int target, int* returnSize) {
+    // Implementation
+    return 0;
+}`;
+  } else if (lang === 'cpp') {
+    filenameEl.textContent = 'solution.cpp';
+    codeEl.value = `#include <vector>
+#include <unordered_map>
+using namespace std;
+
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+        unordered_map<int, int> seen;
+        for (int i = 0; i < nums.size(); ++i) {
+            int diff = target - nums[i];
+            if (seen.count(diff)) return {seen[diff], i};
+            seen[nums[i]] = i;
+        }
+        return {};
+    }
+};`;
+  } else if (lang === 'js') {
+    filenameEl.textContent = 'solution.js';
+    codeEl.value = `function twoSum(nums, target) {
+    const map = new Map();
+    for (let i = 0; i < nums.length; i++) {
+        const diff = target - nums[i];
+        if (map.has(diff)) return [map.get(diff), i];
+        map.set(nums[i], i);
+    }
+    return [];
+}`;
+  }
+}
+
+function runCode() {
+  const btn = document.getElementById('runCodeBtn');
+  btn.textContent = '⟳ Compiling & Executing...';
+  btn.disabled = true;
+
+  const outEl = document.getElementById('output');
+  const detailsEl = document.getElementById('evalDetails');
+
+  outEl.textContent = 'Spinning up runtime container (Python 3.11)...';
+  detailsEl.innerHTML = '<span class="pill blue">Running execution harness...</span>';
+
+  setTimeout(() => {
+    outEl.textContent = 'Allocating memory (12.4 MB)...\nInvoking solution([2, 7, 11, 15], 9)...';
+  }, 180);
+
+  setTimeout(() => {
+    btn.textContent = '▶ Run sample';
+    btn.disabled = false;
+    outEl.textContent = 'Standard Output:\n[0, 1]\n\nProcess finished with exit code 0 (0.018s runtime).\nStandard input/output test verified.';
+    detailsEl.innerHTML = '<span class="pill blue" style="font-weight:700;">✓ Sample Case Passed</span><p style="margin-top:6px;">Expected: [0, 1] · Actual: [0, 1]\nSample verification succeeded. Ready to submit to hidden test cases.</p>';
+  }, 450);
+}
+
+function triggerConfetti() {
+  const canvas = document.getElementById('confettiCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  const count = 90;
+  const colors = ['#0071bc', '#29abe2', '#704fe7', '#10b981', '#f59e0b', '#38bdf8', '#fbbf24'];
+  const pieces = [];
+
+  for (let i = 0; i < count; i++) {
+    pieces.push({
+      x: window.innerWidth * (0.35 + Math.random() * 0.3),
+      y: window.innerHeight * 0.75,
+      vx: (Math.random() - 0.5) * 16,
+      vy: -11 - Math.random() * 12,
+      size: 5 + Math.random() * 6,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      rotation: Math.random() * 360,
+      vRot: (Math.random() - 0.5) * 14,
+      scaleX: 1,
+      vScale: 0.08 + Math.random() * 0.08,
+      life: 140
+    });
+  }
+
+  let frame;
+  function update() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    let active = 0;
+
+    pieces.forEach(p => {
+      if (p.life <= 0) return;
+      active++;
+      p.life--;
+      p.x += p.vx;
+      p.y += p.vy;
+      p.vy += 0.38;
+      p.vx *= 0.985;
+      p.rotation += p.vRot;
+      p.scaleX = Math.cos(p.life * p.vScale);
+
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate((p.rotation * Math.PI) / 180);
+      ctx.scale(p.scaleX, 1);
+      ctx.fillStyle = p.color;
+      ctx.globalAlpha = Math.min(1, p.life / 30);
+      ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.7);
+      ctx.restore();
+    });
+
+    if (active > 0) {
+      frame = requestAnimationFrame(update);
+    } else {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      cancelAnimationFrame(frame);
+    }
+  }
+  update();
+}
+
+function submitCode() {
+  const btn = document.getElementById('submitCodeBtn');
+  btn.textContent = '⟳ Testing Cases...';
+  btn.disabled = true;
+
+  const codeVal = document.getElementById('code').value;
+  const isPass = !codeVal.includes('pass') && !codeVal.includes('// Implementation');
+  const probName = document.getElementById('selectedProblem').textContent;
+  const detailsEl = document.getElementById('evalDetails');
+  const outEl = document.getElementById('output');
+
+  outEl.textContent = 'Allocating sandboxed runner container...';
+  detailsEl.innerHTML = '<div class="test-suite" id="testSuite"></div>';
+  const suite = document.getElementById('testSuite');
+
+  const testCases = [
+    { name: 'Case 1: Standard input [2, 7, 11, 15], target 9', time: '0.01s', pass: true },
+    { name: 'Case 2: Zero index elements [0, 4, 3, 0], target 0', time: '0.01s', pass: true },
+    { name: 'Case 3: Unsorted sequence [3, 2, 4], target 6', time: '0.02s', pass: isPass },
+    { name: 'Case 4: Large array bounds (n=10,000)', time: '0.03s', pass: isPass },
+    { name: 'Case 5: Negative numbers [-1, -2, -3, -4, -5], target -8', time: '0.02s', pass: isPass }
+  ];
+
+  let step = 0;
+  function runNextCase() {
+    if (step < testCases.length) {
+      const tc = testCases[step];
+      const div = document.createElement('div');
+      div.className = 'test-case-item ' + (tc.pass ? 'pass' : 'fail');
+      div.innerHTML = `<span><b>${tc.name}</b></span><span style="font-weight:700;">${tc.pass ? '✓ Passed (' + tc.time + ')' : '✗ Failed'}</span>`;
+      suite.appendChild(div);
+      outEl.textContent = `Executed test case ${step + 1} of 5...
+Status: ${tc.pass ? 'Matched expected return array' : 'Output mismatch'}`;
+      step++;
+      setTimeout(runNextCase, 220);
+    } else {
+      btn.textContent = '✓ Submit to judge';
+      btn.disabled = false;
+
+      if (isPass) {
+        outEl.textContent = `ACCEPTED
+All 5 / 5 hidden test cases passed successfully.
+Runtime: 0.03s · Memory: 11.8 MB (Top 94% execution speed).`;
+        data.points += 20;
+        data.solved++;
+        data.submissions.unshift([probName, 'Python 3', 'Accepted', '20', 'Just now']);
+        save();
+        triggerConfetti();
+        toast('🎉 Solution Accepted! +20 Points added to your profile.');
+      } else {
+        outEl.textContent = `WRONG ANSWER
+Test Case 3 failed. Return values did not match target indices.
+Edge case check recommended.`;
+        data.submissions.unshift([probName, 'Python 3', 'Wrong Answer', '0', 'Just now']);
+        save();
+        toast('Evaluation completed. Some test cases failed.');
+      }
+    }
+  }
+  setTimeout(runNextCase, 200);
+}
+
+function resetCode() {
+  document.getElementById('code').value = `def solution(nums, target):
+    # Write your solution here
+    seen = {}
+    for i, num in enumerate(nums):
+        diff = target - num
+        if diff in seen:
+            return [seen[diff], i]
+        seen[num] = i
+    return []
+
+print(solution([2, 7, 11, 15], 9))`;
+  document.getElementById('output').textContent = 'Run your code to see console output here.';
+  document.getElementById('evalDetails').textContent = 'No submission yet.';
+  toast('Starter code reset.');
+}
+
+function submissions() {
+  const rows = data.submissions.length
+    ? data.submissions.map(s => [s[0], s[1], `<span class="pill ${s[2] === 'Accepted' ? '' : 'bad'}">${s[2]}</span>`, s[3], s[4]])
+    : [['Two Sum', 'Python 3', '<span class="pill">Accepted</span>', '20', 'Today']];
+
+  return head('My submissions', 'Review your coding attempts and test case judge results.') +
+    `<div class="card">${table(['Problem', 'Language', 'Verdict', 'Points', 'Submitted'], rows)}</div>`;
+}
+
+
+/* ========================================================
+   INTERACTIVE LEADERBOARD ENGINE & DATA STATE
+   ======================================================== */
+
+let lbScope = 'college';        // 'college' | 'department' | 'batch'
+let lbTimeframe = 'all';        // 'all' | 'month' | 'week'
+let lbSearchQuery = '';
+
+const lbMasterRoster = [
+  { id: 'STU001', name: 'Jordan Smith', dept: 'CSE', batch: '2024-B', allPoints: 1080, solved: 42, acc: 91, streak: 14, trend: '—', cheers: 24, bg: '#704fe7' },
+  { id: 'STU002', name: 'Jamie Lee', dept: 'IT', batch: '2024-A', allPoints: 920, solved: 38, acc: 84, streak: 9, trend: '↑ 1', cheers: 19, bg: '#0071bc' },
+  { id: 'STU000', name: 'Alex Morgan', dept: 'CSE', batch: '2024-A', allPoints: 420, solved: 18, acc: 86, streak: 6, isYou: true, trend: '↑ 2', cheers: 31, bg: '#29abe2' },
+  { id: 'STU004', name: 'Taylor Kim', dept: 'ECE', batch: '2024-A', allPoints: 680, solved: 29, acc: 78, streak: 5, trend: '↓ 1', cheers: 14, bg: '#059669' },
+  { id: 'STU003', name: 'Sam Wilson', dept: 'CSE', batch: '2024-B', allPoints: 540, solved: 21, acc: 72, streak: 3, trend: '—', cheers: 12, bg: '#d97706' },
+  { id: 'STU005', name: 'Maya Sharma', dept: 'CSE', batch: '2024-A', allPoints: 490, solved: 19, acc: 80, streak: 7, trend: '↑ 3', cheers: 16, bg: '#8b5cf6' },
+  { id: 'STU006', name: 'David Chen', dept: 'IT', batch: '2024-B', allPoints: 460, solved: 17, acc: 75, streak: 4, trend: '—', cheers: 10, bg: '#0284c7' },
+  { id: 'STU007', name: 'Riya Patel', dept: 'IT', batch: '2024-A', allPoints: 410, solved: 16, acc: 71, streak: 2, trend: '↓ 2', cheers: 8, bg: '#ec4899' },
+  { id: 'STU008', name: 'Aarav Nair', dept: 'ECE', batch: '2025-A', allPoints: 390, solved: 15, acc: 69, streak: 6, trend: '↑ 1', cheers: 11, bg: '#10b981' },
+  { id: 'STU009', name: 'Priya Sundaram', dept: 'CSE', batch: '2024-B', allPoints: 350, solved: 14, acc: 73, streak: 1, trend: '—', cheers: 7, bg: '#6366f1' },
+  { id: 'STU010', name: 'Noah Davis', dept: 'CSE', batch: '2024-A', allPoints: 310, solved: 12, acc: 68, streak: 4, trend: '↓ 1', cheers: 9, bg: '#f59e0b' },
+  { id: 'STU011', name: 'Rohan Verma', dept: 'CSE', batch: '2024-A', allPoints: 280, solved: 11, acc: 65, streak: 2, trend: '↑ 1', cheers: 5, bg: '#64748b' }
+];
+
+function getProcessedLeaderboard() {
+  // Sync Alex Morgan's points with user data
+  const you = lbMasterRoster.find(s => s.isYou);
+  if (you) {
+    you.allPoints = data.points;
+    you.solved = data.solved;
+    you.streak = data.streak;
+  }
+
+  // Filter by scope
+  let list = lbMasterRoster.filter(s => {
+    if (lbScope === 'department') return s.dept === 'CSE';
+    if (lbScope === 'batch') return s.batch === '2024-A';
+    return true; // college
+  });
+
+  // Calculate timeframe points
+  list = list.map(s => {
+    let p = s.allPoints;
+    let sl = s.solved;
+    if (lbTimeframe === 'month') {
+      p = Math.round(s.allPoints * 0.58);
+      sl = Math.max(1, Math.round(s.solved * 0.6));
+    } else if (lbTimeframe === 'week') {
+      p = Math.round(s.allPoints * 0.24);
+      sl = Math.max(1, Math.round(s.solved * 0.25));
+    }
+    return { ...s, currentPoints: p, currentSolved: sl };
+  });
+
+  // Sort by points descending
+  list.sort((a, b) => b.currentPoints - a.currentPoints);
+
+  // Assign ranks
+  list.forEach((s, idx) => { s.rank = idx + 1; });
+
+  // Filter by search query if any
+  if (lbSearchQuery.trim()) {
+    const q = lbSearchQuery.trim().toLowerCase();
+    return list.filter(s => s.name.toLowerCase().includes(q) || s.dept.toLowerCase().includes(q) || s.batch.toLowerCase().includes(q));
+  }
+
+  return list;
+}
+
+function leaderboard() {
+  const list = getProcessedLeaderboard();
+  const you = list.find(s => s.isYou);
+  const youRank = you ? you.rank : 3;
+
+  // Podium (Ranks 1, 2, 3)
+  const top1 = list[0] || lbMasterRoster[0];
+  const top2 = list[1] || lbMasterRoster[1];
+  const top3 = list[2] || lbMasterRoster[2];
+
+  // Target banner calculations
+  let targetHtml = '';
+  if (you && youRank > 1) {
+    const nextAhead = list[youRank - 2];
+    const diff = nextAhead.currentPoints - you.currentPoints;
+    const pct = Math.min(100, Math.round((you.currentPoints / nextAhead.currentPoints) * 100));
+    targetHtml = `
+      <div class="lb-target-banner">
+        <div class="lb-target-info">
+          <div style="font-size:26px;">🎯</div>
+          <div>
+            <b style="font-size:14px;color:var(--text);">Next Rank Target: #${nextAhead.rank} ${esc(nextAhead.name)}</b>
+            <p style="margin:2px 0 0;font-size:12px;">You are <b>${diff} pts</b> away from climbing to #${nextAhead.rank} (${nextAhead.dept} · ${nextAhead.currentPoints} pts).</p>
+          </div>
+        </div>
+        <div class="lb-target-progress-wrap">
+          <div style="display:flex;justify-content:space-between;font-size:11px;font-weight:700;margin-bottom:5px;">
+            <span>${you.currentPoints} pts</span>
+            <span>Target: ${nextAhead.currentPoints} pts</span>
+          </div>
+          <div class="bar"><span style="width:${pct}%;"></span></div>
+        </div>
+      </div>
+    `;
+  } else if (you && youRank === 1) {
+    targetHtml = `
+      <div class="lb-target-banner" style="background:linear-gradient(135deg, #fef3c7 0%, #fffbeb 100%);border-color:#fde68a;">
+        <div class="lb-target-info">
+          <div style="font-size:26px;">🏆</div>
+          <div>
+            <b style="font-size:14px;color:#92400e;">You are Rank #1 on the ${lbScope.toUpperCase()} Leaderboard!</b>
+            <p style="margin:2px 0 0;font-size:12px;color:#b45309;">Outstanding work, Alex! Leading with ${you.currentPoints} points and a ${data.streak}-day streak.</p>
+          </div>
+        </div>
+        <button class="btn small" style="background:#d97706;border-color:#b45309;" onclick="triggerConfetti()">🎉 Celebrate</button>
+      </div>
+    `;
+  }
+
+  return head('Leaderboard', 'See how you rank across your college, department and batch.') +
+    `<!-- Scope & Timeframe Controls -->
+    <div class="lb-controls">
+      <div class="lb-tabs" id="lbScopeTabs">
+        <button class="lb-tab-btn ${lbScope === 'college' ? 'active' : ''}" onclick="setLbScope('college')">College</button>
+        <button class="lb-tab-btn ${lbScope === 'department' ? 'active' : ''}" onclick="setLbScope('department')">Department (CSE)</button>
+        <button class="lb-tab-btn ${lbScope === 'batch' ? 'active' : ''}" onclick="setLbScope('batch')">Batch (2024-A)</button>
+      </div>
+
+      <div class="lb-tabs" id="lbTimeTabs">
+        <button class="lb-tab-btn ${lbTimeframe === 'all' ? 'active' : ''}" onclick="setLbTimeframe('all')">All-Time</button>
+        <button class="lb-tab-btn ${lbTimeframe === 'month' ? 'active' : ''}" onclick="setLbTimeframe('month')">This Month</button>
+        <button class="lb-tab-btn ${lbTimeframe === 'week' ? 'active' : ''}" onclick="setLbTimeframe('week')">This Week</button>
+      </div>
+
+      <div class="lb-search-wrap">
+        <input id="lbSearchInput" placeholder="Search student or department..." oninput="onLbSearch(this.value)" value="${esc(lbSearchQuery)}">
+      </div>
+    </div>
+
+    ${targetHtml}
+
+    <!-- 3D Tiered Podium (Rank 2, Rank 1, Rank 3) -->
+    <div class="podium-wrap">
+      <!-- Rank 2 Podium Card -->
+      <div class="podium-card rank-2" onclick="openStudentDuel('${top2.id}')" title="Click to inspect & compare">
+        <span class="podium-step-num">#2 SILVER</span>
+        <div class="podium-badge-icon">🥈</div>
+        <div class="podium-avatar" style="background:${top2.bg};">${top2.name[0]}</div>
+        <b style="font-size:15px;color:var(--text);display:block;margin:6px 0 2px;">${esc(top2.name)} ${top2.isYou ? '<span class="pill blue" style="font-size:10px;">You</span>' : ''}</b>
+        <div class="muted" style="font-size:12px;">${top2.dept} · ${top2.batch}</div>
+        <div style="font-size:16px;font-weight:800;color:var(--text);margin-top:8px;">${top2.currentPoints.toLocaleString()} <span style="font-size:11px;font-weight:600;color:var(--text-muted);">pts</span></div>
+        <div class="muted" style="font-size:11px;margin-top:3px;">${top2.currentSolved} solved · ${flameIcon()} ${top2.streak}d</div>
+      </div>
+
+      <!-- Rank 1 Podium Card (Center / Tallest) -->
+      <div class="podium-card rank-1" onclick="openStudentDuel('${top1.id}')" title="Click to inspect & compare">
+        <span class="podium-step-num">#1 GOLD</span>
+        <div class="podium-badge-icon">👑</div>
+        <div class="podium-avatar" style="background:${top1.bg};">${top1.name[0]}</div>
+        <b style="font-size:16px;color:var(--text);display:block;margin:6px 0 2px;">${esc(top1.name)} ${top1.isYou ? '<span class="pill blue" style="font-size:10px;">You</span>' : ''}</b>
+        <div class="muted" style="font-size:12px;">${top1.dept} · ${top1.batch}</div>
+        <div style="font-size:19px;font-weight:900;color:#b45309;margin-top:8px;">${top1.currentPoints.toLocaleString()} <span style="font-size:12px;font-weight:600;color:var(--text-muted);">pts</span></div>
+        <div class="muted" style="font-size:11px;margin-top:3px;">${top1.currentSolved} solved · ${flameIcon()} ${top1.streak}d</div>
+      </div>
+
+      <!-- Rank 3 Podium Card -->
+      <div class="podium-card rank-3" onclick="openStudentDuel('${top3.id}')" title="Click to inspect & compare">
+        <span class="podium-step-num">#3 BRONZE</span>
+        <div class="podium-badge-icon">🥉</div>
+        <div class="podium-avatar" style="background:${top3.bg};">${top3.name[0]}</div>
+        <b style="font-size:15px;color:var(--text);display:block;margin:6px 0 2px;">${esc(top3.name)} ${top3.isYou ? '<span class="pill blue" style="font-size:10px;">You</span>' : ''}</b>
+        <div class="muted" style="font-size:12px;">${top3.dept} · ${top3.batch}</div>
+        <div style="font-size:16px;font-weight:800;color:var(--text);margin-top:8px;">${top3.currentPoints.toLocaleString()} <span style="font-size:11px;font-weight:600;color:var(--text-muted);">pts</span></div>
+        <div class="muted" style="font-size:11px;margin-top:3px;">${top3.currentSolved} solved · ${flameIcon()} ${top3.streak}d</div>
+      </div>
+    </div>
+
+    <!-- Leaderboard Full Rankings Table -->
+    <div class="card" style="padding:0;overflow:hidden;">
+      <div class="table-wrap" style="border:0;">
+        <table>
+          <thead>
+            <tr>
+              <th style="width:70px;">Rank</th>
+              <th>Student</th>
+              <th>Department & Batch</th>
+              <th>Streak</th>
+              <th>Solved</th>
+              <th style="text-align:right;">Points</th>
+              <th style="width:160px;text-align:right;">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${list.map(s => `
+              <tr class="lb-row ${s.isYou ? 'is-you' : ''}" onclick="openStudentDuel('${s.id}')">
+                <td>
+                  <b style="font-size:14px;color:var(--text);">#${s.rank}</b>
+                  <div class="${s.trend.includes('↑') ? 'trend-up' : s.trend.includes('↓') ? 'trend-down' : 'trend-same'}">${s.trend}</div>
+                </td>
+                <td>
+                  <div class="lb-student-cell">
+                    <div class="lb-avatar-mini" style="background:${s.bg};">${s.name[0]}</div>
+                    <div>
+                      <b style="color:var(--text);">${esc(s.name)}</b> ${s.isYou ? '<span class="pill blue" style="font-size:10px;margin-left:4px;">You</span>' : ''}
+                      <small class="muted" style="display:block;font-size:11px;">Roll: ${s.id}</small>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <span>${s.dept}</span>
+                  <small class="muted" style="display:block;font-size:11px;">Batch ${s.batch}</small>
+                </td>
+                <td>
+                  <span style="font-weight:600;">${flameIcon()} ${s.streak}d</span>
+                </td>
+                <td>
+                  <div style="display:flex;align-items:center;gap:8px;">
+                    <span style="font-weight:600;">${s.currentSolved}</span>
+                    <div class="bar" style="width:60px;height:6px;"><span style="width:${Math.min(100, Math.round((s.currentSolved / 50) * 100))}%;"></span></div>
+                  </div>
+                </td>
+                <td style="text-align:right;">
+                  <b style="font-size:14px;color:var(--text);">${s.currentPoints.toLocaleString()}</b>
+                </td>
+                <td style="text-align:right;" onclick="event.stopPropagation()">
+                  <div class="lb-action-btns" style="justify-content:flex-end;">
+                    <button class="btn secondary small" onclick="openStudentDuel('${s.id}')" title="Compare stats">Compare ⚡</button>
+                    <button class="btn ghost small" onclick="giveKudos('${s.id}')" title="Send cheers">👏 <span id="cheers_${s.id}">${s.cheers}</span></button>
+                  </div>
+                </td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>`;
+}
+
+function setLbScope(scope) {
+  lbScope = scope;
+  render('Leaderboard');
+  toast('Leaderboard switched to ' + scope.toUpperCase() + ' scope.');
+}
+
+function setLbTimeframe(tf) {
+  lbTimeframe = tf;
+  render('Leaderboard');
+  const labels = { all: 'All-Time', month: 'This Month', week: 'This Week' };
+  toast('Showing ' + labels[tf] + ' rankings.');
+}
+
+function onLbSearch(val) {
+  lbSearchQuery = val;
+  const input = document.getElementById('lbSearchInput');
+  const cursor = input ? input.selectionStart : null;
+  render('Leaderboard');
+  const reInput = document.getElementById('lbSearchInput');
+  if (reInput) {
+    reInput.focus();
+    if (cursor != null) reInput.setSelectionRange(cursor, cursor);
+  }
+}
+
+function giveKudos(studentId) {
+  const s = lbMasterRoster.find(x => x.id === studentId);
+  if (s) {
+    s.cheers++;
+    const span = document.getElementById('cheers_' + studentId);
+    if (span) span.textContent = s.cheers;
+    toast('👏 Sent kudos to ' + s.name + '!');
+  }
+}
+
+function openStudentDuel(studentId) {
+  const them = lbMasterRoster.find(x => x.id === studentId) || lbMasterRoster[0];
+  const you = lbMasterRoster.find(x => x.isYou) || { name: 'Alex Morgan', allPoints: data.points, solved: data.solved, acc: 86, streak: data.streak };
+
+  openModal('Head-to-Head Comparison');
+  const youPts = you.allPoints;
+  const themPts = them.allPoints;
+  const ptsTotal = youPts + themPts || 1;
+  const youPtsPct = Math.round((youPts / ptsTotal) * 100);
+
+  const youSlv = you.solved;
+  const themSlv = them.solved;
+  const slvTotal = youSlv + themSlv || 1;
+  const youSlvPct = Math.round((youSlv / slvTotal) * 100);
+
+  const youAcc = you.acc || 86;
+  const themAcc = them.acc || 84;
+  const accTotal = youAcc + themAcc || 1;
+  const youAccPct = Math.round((youAcc / accTotal) * 100);
+
+  const youStrk = you.streak || data.streak;
+  const themStrk = them.streak || 5;
+  const strkTotal = youStrk + themStrk || 1;
+  const youStrkPct = Math.round((youStrk / strkTotal) * 100);
+
+  document.getElementById('modalBody').innerHTML = `
+    <div class="duel-wrap">
+      <div class="duel-player">
+        <div class="podium-avatar" style="background:#0071bc;margin:0 auto 6px;">A</div>
+        <b style="font-size:14px;color:var(--text);display:block;">${esc(you.name)}</b>
+        <span class="pill blue" style="font-size:10px;">You · CSE</span>
+      </div>
+      <div class="duel-vs">VS</div>
+      <div class="duel-player">
+        <div class="podium-avatar" style="background:${them.bg};margin:0 auto 6px;">${them.name[0]}</div>
+        <b style="font-size:14px;color:var(--text);display:block;">${esc(them.name)}</b>
+        <span class="pill" style="font-size:10px;">${them.dept} · Rank #${them.rank || '—'}</span>
+      </div>
+    </div>
+
+    <!-- Comparative Duel Bars -->
+    <div style="margin-top:14px;">
+      <!-- Points -->
+      <div class="stat-duel-row">
+        <b>${youPts} pts</b>
+        <div>
+          <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-muted);margin-bottom:4px;">
+            <span>Total Points</span>
+          </div>
+          <div class="duel-bar-split">
+            <div class="duel-bar-you" style="width:${youPtsPct}%;"></div>
+            <div class="duel-bar-them" style="width:${100 - youPtsPct}%;"></div>
+          </div>
+        </div>
+        <b style="text-align:right;">${themPts} pts</b>
+      </div>
+
+      <!-- Solved -->
+      <div class="stat-duel-row">
+        <b>${youSlv} solved</b>
+        <div>
+          <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-muted);margin-bottom:4px;">
+            <span>Problems Solved</span>
+          </div>
+          <div class="duel-bar-split">
+            <div class="duel-bar-you" style="width:${youSlvPct}%;"></div>
+            <div class="duel-bar-them" style="width:${100 - youSlvPct}%;"></div>
+          </div>
+        </div>
+        <b style="text-align:right;">${themSlv} solved</b>
+      </div>
+
+      <!-- Accuracy -->
+      <div class="stat-duel-row">
+        <b>${youAcc}%</b>
+        <div>
+          <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-muted);margin-bottom:4px;">
+            <span>Accuracy Rate</span>
+          </div>
+          <div class="duel-bar-split">
+            <div class="duel-bar-you" style="width:${youAccPct}%;"></div>
+            <div class="duel-bar-them" style="width:${100 - youAccPct}%;"></div>
+          </div>
+        </div>
+        <b style="text-align:right;">${themAcc}%</b>
+      </div>
+
+      <!-- Streak -->
+      <div class="stat-duel-row">
+        <b>${flameIcon()} ${youStrk}d</b>
+        <div>
+          <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-muted);margin-bottom:4px;">
+            <span>Coding Streak</span>
+          </div>
+          <div class="duel-bar-split">
+            <div class="duel-bar-you" style="width:${youStrkPct}%;"></div>
+            <div class="duel-bar-them" style="width:${100 - youStrkPct}%;"></div>
+          </div>
+        </div>
+        <b style="text-align:right;">${flameIcon()} ${themStrk}d</b>
+      </div>
+    </div>
+  `;
+
+  document.getElementById('modalActions').innerHTML = `
+    <button class="btn ghost" onclick="closeModal()">Close</button>
+    <button class="btn" onclick="closeModal();render('Problem Bank');toast('Problem Bank loaded for practice.')">Solve Problems to Overtake →</button>
+  `;
+}
+
+function analytics(p) {
+  return head(p, 'Track practice intensity, completion rates and topic mastery.') +
+    stats([
+      ['Average score', '74%', '◎', '↑ 6%'],
+      ['Problems solved', '8,420', '⌘', 'This month'],
+      ['Active learners', '1,120', '♙', '90% participation'],
+      ['Completion rate', '82%', '✓', '↑ 8%']
+    ]) +
+    `<div class="grid two">
+      <div class="card">
+        <h3>Weekly activity</h3>
+        ${activity()}
+      </div>
+      <div class="card">
+        <h3>Topic performance</h3>
+        ${topicBars()}
+      </div>
+    </div>`;
+}
+
+function profile() {
+  return head('My profile', 'Manage your institutional information and student credentials.') +
+    `<div class="card">
+      <div class="profile-row">
+        <div class="big-avatar">${roles[role].person[0]}</div>
+        <div>
+          <h2 style="margin:0;">${roles[role].person}</h2>
+          <span class="muted">${roles[role].name} · SKILLRACK</span>
+        </div>
+      </div>
+      <div class="grid two" style="margin-top:24px;">
+        <div class="field">
+          <label>Full name</label>
+          <input id="profileName" value="${roles[role].person}">
+        </div>
+        <div class="field">
+          <label>Email address</label>
+          <input value="${roles[role].email}" disabled style="background:var(--bg-subtle);">
+        </div>
+        <div class="field">
+          <label>College</label>
+          <input id="profileCollege" value="ABC Engineering College">
+        </div>
+        <div class="field">
+          <label>Department</label>
+          <input id="profileDepartment" value="Computer Science and Engineering">
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;margin-top:10px;">
+        <button class="btn" onclick="saveProfile()">Save changes</button>
+        <button class="btn secondary" onclick="downloadProfileCSV()">Download profile CSV</button>
+      </div>
+    </div>`;
+}
+
+function saveProfile() {
+  const name = document.getElementById('profileName').value.trim();
+  if (!name) { toast('Please enter a valid name.'); return; }
+  roles[role].person = name;
+  document.getElementById('sideName').textContent = name;
+  document.getElementById('topAvatar').textContent = name[0];
+  document.getElementById('sideAvatar').textContent = name[0];
+  toast('Profile changes saved successfully.');
+}
+
+function downloadProfileCSV() {
+  const csv = [
+    ['Field', 'Value'],
+    ['Name', roles[role].person],
+    ['Email', roles[role].email],
+    ['Role', roles[role].name],
+    ['College', document.getElementById('profileCollege')?.value || 'ABC Engineering College'],
+    ['Department', document.getElementById('profileDepartment')?.value || 'CSE']
+  ].map(r => r.map(c => '"' + c + '"').join(',')).join('\r\n');
+
+  downloadBlobCSV('profile-' + role + '.csv', csv);
+}
+
+function settings() {
+  return head('Settings', 'Personalize your SKILLRACK experience and system preferences.') +
+    `<div class="card" style="max-width:720px;">
+      <h3>Appearance</h3>
+      <p class="muted" style="margin:4px 0 14px;">Switch between light palette and dark high-contrast mode.</p>
+      <button class="btn secondary" onclick="toggleTheme()">Toggle light / dark theme</button>
+      <hr style="border:0;border-top:1px solid var(--line);margin:22px 0;">
+      <h3>Account preferences</h3>
+      <label style="display:block;margin:12px 0;cursor:pointer;">
+        <input type="checkbox" checked style="accent-color:var(--primary);"> Email notifications for assessments
+      </label>
+      <label style="display:block;margin:12px 0;cursor:pointer;">
+        <input type="checkbox" checked style="accent-color:var(--primary);"> Daily coding reminders (9:00 AM)
+      </label>
+      <label style="display:block;margin:12px 0;cursor:pointer;">
+        <input type="checkbox" style="accent-color:var(--primary);"> Weekly faculty progress summary
+      </label>
+      <button class="btn" style="margin-top:10px;" onclick="toast('Preferences saved.')">Save preferences</button>
+      <hr style="border:0;border-top:1px solid var(--line);margin:22px 0;">
+      <h3>Prototype Data</h3>
+      <p class="muted" style="margin:4px 0 14px;">Reset all demo records, test submissions and progress to default initial state.</p>
+      <button class="btn danger" onclick="resetPrototypeData()">Reset demo data</button>
+    </div>`;
+}
+
+function resetPrototypeData() {
+  if (confirm('Reset all demo data back to factory defaults?')) {
+    localStorage.removeItem('ccData');
+    data = loadData();
+    render('Dashboard');
+    toast('Demo data reset to factory defaults.');
+  }
+}
+
+function management(label, rows) {
+  const isStudents = label === 'Students';
+  const isColleges = label === 'Colleges' || label === 'College Licences';
+  const headers = isStudents
+    ? ['ID', 'Name', 'Department / Batch', 'Score', 'Status', 'Actions']
+    : isColleges
+      ? ['College', 'Location', 'Status', 'Licence Expiry', 'Actions']
+      : ['ID', 'Name', 'Details', 'Status', 'Actions'];
+
+  const currentRows = getManagementData(label);
+  const tableRows = currentRows.map((r, i) => {
+    const mainCols = isStudents
+      ? [esc(r[0]), `<strong>${esc(r[1])}</strong>`, esc(r[2]), esc(r[3]), `<span class="pill">${esc(r[4])}</span>`]
+      : isColleges
+        ? [`<strong>${esc(r[0])}</strong>`, esc(r[1]), `<span class="pill">${esc(r[2])}</span>`, esc(r[3])]
+        : [esc(r[0]), `<strong>${esc(r[1])}</strong>`, esc(r[2]), `<span class="pill">${esc(r[3] || 'Active')}</span>`];
+
+    return [
+      ...mainCols,
+      `<button class="btn secondary small" onclick="viewRecord('${label}', ${i})">View</button>
+       <button class="btn ghost small" onclick="editRecord('${label}', ${i})">Edit</button>
+       <button class="btn danger small" onclick="deleteRecord('${label}', ${i})">Delete</button>`
+    ];
+  });
+
+  return head(
+    label,
+    'Create, review and manage institutional records.',
+    `<button class="btn" onclick="addRecord('${label}')">＋ Add new</button>`
+  ) +
+  `<div class="card">
+    <div class="toolbar">
+      <input id="manageSearch" placeholder="Search ${esc(label.toLowerCase())}..." oninput="searchTable(this)">
+      <button class="btn ghost small" onclick="exportManagement('${label}')">Export CSV</button>
+    </div>
+    <div id="manageTable">${table(headers, tableRows)}</div>
+  </div>`;
+}
+
+function getManagementData(label) {
+  if (label === 'Students') return data.students;
+  if (label === 'Faculty') return data.faculty;
+  if (label === 'Colleges' || label === 'College Licences') return data.colleges;
+  if (label === 'Departments') return data.departments;
+  if (label === 'Batches') return data.batches;
+  return [];
+}
+
+function searchTable(el) {
+  const q = el.value.toLowerCase();
+  document.querySelectorAll('#manageTable tbody tr').forEach(tr => {
+    tr.style.display = tr.textContent.toLowerCase().includes(q) ? '' : 'none';
+  });
+}
+
+function addRecord(label) {
+  const isStudents = label === 'Students';
+  const isColleges = label === 'Colleges' || label === 'College Licences';
+  const fields = isStudents
+    ? [{ id: 'name', label: 'Student full name' }, { id: 'details', label: 'Department / Batch (e.g. CSE · A)' }]
+    : isColleges
+      ? [{ id: 'name', label: 'College name' }, { id: 'details', label: 'Location' }, { id: 'expiry', label: 'Licence expiry date', type: 'date' }]
+      : [{ id: 'name', label: label.slice(0, -1) + ' name' }, { id: 'details', label: 'Department / Details' }];
+
+  modalForm('Add ' + label, fields, values => {
+    const list = getManagementData(label);
+    if (isStudents) {
+      list.push(['STU' + String(Date.now()).slice(-4), values.name, values.details, '—', 'Active']);
+    } else if (isColleges) {
+      list.push([values.name, values.details, 'Active', values.expiry || '2027-12-31']);
+    } else {
+      list.push([label.slice(0, 3).toUpperCase() + String(Date.now()).slice(-3), values.name, values.details, 'Active']);
+    }
+    save();
+    closeModal();
+    render(current);
+    toast(label + ' record added successfully.');
+  });
+}
+
+function viewRecord(label, i) {
+  const r = getManagementData(label)[i];
+  if (!r) return;
+  openModal('Record Details');
+  document.getElementById('modalBody').innerHTML = `
+    <div class="notice" style="line-height:1.7;">
+      ${r.map((v, j) => `<p><b>${['Field 1 / ID', 'Name / Entity', 'Details / Batch', 'Score / Status', 'Status / Expiry'][j] || 'Field ' + (j + 1)}:</b> ${esc(v)}</p>`).join('')}
+    </div>
+  `;
+  document.getElementById('modalActions').innerHTML = '<button class="btn" onclick="closeModal()">Close</button>';
+}
+
+function editRecord(label, i) {
+  const r = getManagementData(label)[i];
+  if (!r) return;
+  const isStudents = label === 'Students';
+  const isColleges = label === 'Colleges' || label === 'College Licences';
+
+  const fields = isStudents
+    ? [{ id: 'name', label: 'Student name', value: r[1] }, { id: 'details', label: 'Department / Batch', value: r[2] }]
+    : isColleges
+      ? [{ id: 'name', label: 'College name', value: r[0] }, { id: 'details', label: 'Location', value: r[1] }, { id: 'expiry', label: 'Licence expiry date', value: r[3], type: 'date' }]
+      : [{ id: 'name', label: 'Name', value: r[1] }, { id: 'details', label: 'Details', value: r[2] }];
+
+  modalForm('Edit ' + label, fields, values => {
+    if (isStudents) { r[1] = values.name; r[2] = values.details; }
+    else if (isColleges) { r[0] = values.name; r[1] = values.details; r[3] = values.expiry || r[3]; }
+    else { r[1] = values.name; r[2] = values.details; }
+    save();
+    closeModal();
+    render(current);
+    toast('Record updated successfully.');
+  });
+}
+
+function deleteRecord(label, i) {
+  if (confirm('Delete this record? This action cannot be undone.')) {
+    getManagementData(label).splice(i, 1);
+    save();
+    render(current);
+    toast('Record deleted.');
+  }
+}
+
+function exportManagement(label) {
+  const rows = getManagementData(label);
+  const csv = [
+    ['ID / Identifier', 'Name', 'Details', 'Score / Status'],
+    ...rows.map(r => r.slice(0, 4))
+  ].map(r => r.map(c => '"' + String(c ?? '').replace(/"/g, '""') + '"').join(',')).join('\r\n');
+
+  downloadBlobCSV(label.toLowerCase().replace(/\s+/g, '-') + '.csv', csv);
+}
+
+function assignment() {
+  return head('Problem assignment', 'Assign practice problems to a batch or individual learners.') +
+    `<div class="card" style="max-width:720px;">
+      <div class="field">
+        <label>Select problem</label>
+        <select id="assignProblem">
+          ${data.problems.map(p => `<option>${p[0]} (${p[1]} · ${p[2]})</option>`).join('')}
+        </select>
+      </div>
+      <div class="field">
+        <label>Assign to batch</label>
+        <select id="assignBatch">
+          <option>CSE · 2024-A (48 students)</option>
+          <option>IT · 2024-A (42 students)</option>
+          <option>ECE · 2025-A (50 students)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Due date</label>
+        <input type="date" value="2026-11-25">
+      </div>
+      <div class="field">
+        <label>Instructions</label>
+        <textarea rows="3" placeholder="Add guidance, prerequisites or submission constraints for students."></textarea>
+      </div>
+      <button class="btn" onclick="toast('Problem successfully assigned to selected batch.')">Assign problem →</button>
+    </div>`;
+}
+
+function tests() {
+  return head(
+    'Scheduled tests',
+    'Create automated assessments and manage scheduled test windows.',
+    '<button class="btn" onclick="openCreateTestModal()">＋ Create test</button>'
+  ) +
+  `<div class="grid three">
+    <div class="card">
+      <span class="pill blue">UPCOMING</span>
+      <h3 style="margin-top:12px;">Python Fundamentals</h3>
+      <p class="muted" style="margin:4px 0 10px;">20 Nov 2026 · 10:00 AM</p>
+      <b>60 minutes · 20 questions</b>
+      <p style="margin-top:14px;">
+        <button class="btn secondary small full" onclick="startTest()">View / Start test →</button>
+      </p>
+    </div>
+    <div class="card">
+      <span class="pill warn">DRAFT</span>
+      <h3 style="margin-top:12px;">Data Structures Quiz</h3>
+      <p class="muted" style="margin:4px 0 10px;">24 Nov 2026 · 11:00 AM</p>
+      <b>45 minutes · 15 questions</b>
+      <p style="margin-top:14px;">
+        <button class="btn ghost small full" onclick="toast('Draft saved. Publish before scheduled date.')">Edit draft</button>
+      </p>
+    </div>
+    <div class="card">
+      <span class="pill">COMPLETED</span>
+      <h3 style="margin-top:12px;">Array Basics Assessment</h3>
+      <p class="muted" style="margin:4px 0 10px;">12 Nov 2026 · 9:00 AM</p>
+      <b>Results available · 92% pass</b>
+      <p style="margin-top:14px;">
+        <button class="btn ghost small full" onclick="toast('Assessment score report downloaded.')">View results</button>
+      </p>
+    </div>
+  </div>`;
+}
+
+let testTimerInterval = null;
+
+function startTest() {
+  openModal('Python Fundamentals Assessment');
+  let remaining = 600;
+
+  document.getElementById('modalBody').innerHTML = `
+    <p class="muted" style="margin-bottom:12px;">Timed Assessment · Multiple Choice</p>
+    <div id="testTimer" class="notice" style="margin-bottom:16px;font-weight:700;">Time remaining: 10:00</div>
+    <h3 style="margin-bottom:12px;">Question 1: What is the output of print(2 ** 3)?</h3>
+    <label style="display:block;margin:8px 0;cursor:pointer;"><input type="radio" name="ans" value="6"> 6</label>
+    <label style="display:block;margin:8px 0;cursor:pointer;"><input type="radio" name="ans" value="8"> 8</label>
+    <label style="display:block;margin:8px 0;cursor:pointer;"><input type="radio" name="ans" value="9"> 9</label>
+  `;
+
+  document.getElementById('modalActions').innerHTML = '<button class="btn ghost" onclick="closeModal()">Cancel</button><button class="btn" onclick="submitTest()">Submit test</button>';
+
+  if (testTimerInterval) clearInterval(testTimerInterval);
+  testTimerInterval = setInterval(() => {
+    remaining--;
+    const m = Math.floor(remaining / 60);
+    const s = remaining % 60;
+    const el = document.getElementById('testTimer');
+    if (el) {
+      el.textContent = 'Time remaining: ' + String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+    }
+    if (remaining <= 0) {
+      clearInterval(testTimerInterval);
+      submitTest();
+    }
+  }, 1000);
+}
+
+function submitTest() {
+  if (testTimerInterval) clearInterval(testTimerInterval);
+  const selected = document.querySelector('input[name="ans"]:checked');
+  closeModal();
+  if (selected && selected.value === '8') {
+    toast('Test submitted! Perfect score: 1/1 (100%). Points recorded.');
+  } else {
+    toast('Test submitted. Score: 0/1. Review correct answers in summary.');
+  }
+}
+
+function openCreateTestModal() {
+  modalForm('Create Assessment Test', [
+    { id: 'title', label: 'Test title (e.g. Algorithms Quiz)' },
+    { id: 'date', label: 'Scheduled date', type: 'date' },
+    { id: 'duration', label: 'Duration (minutes, e.g. 60)' },
+    { id: 'qcount', label: 'Question count (e.g. 20)' }
+  ], values => {
+    closeModal();
+    toast('Test "' + values.title + '" scheduled successfully.');
+    render('Scheduled Tests');
+  });
+}
+
+function weak() {
+  return head('Students needing support', 'Identify learners who require targeted faculty intervention and practice.') +
+    `<div class="card">
+      ${table(
+        ['Student', 'Batch', 'Accuracy', 'Suggested Action'],
+        [
+          ['Sam Wilson', 'CSE · B', '42%', `<button class="btn secondary small" onclick="openSupportPlan('Sam Wilson')">Create support plan</button>`],
+          ['Riya Patel', 'IT · A', '48%', `<button class="btn secondary small" onclick="openSupportPlan('Riya Patel')">Create support plan</button>`],
+          ['Noah Davis', 'CSE · A', '51%', `<button class="btn secondary small" onclick="openSupportPlan('Noah Davis')">Create support plan</button>`]
+        ]
+      )}
+    </div>`;
+}
+
+function weakList() {
+  return [
+    ['Sam Wilson', '42% accuracy · Arrays & Loops'],
+    ['Riya Patel', '48% accuracy · Searching'],
+    ['Noah Davis', '51% accuracy · Strings']
+  ].map(x => `
+    <div class="problem">
+      <div>
+        <b style="color:var(--text);">${x[0]}</b>
+        <p>${x[1]}</p>
+      </div>
+      <button class="btn secondary small" onclick="openSupportPlan('${x[0]}')">Support plan</button>
+    </div>
+  `).join('');
+}
+
+function openSupportPlan(studentName) {
+  modalForm('Create Support Plan: ' + studentName, [
+    { id: 'goal', label: 'Target mastery topic (e.g. Arrays & Two Pointers)' },
+    { id: 'mentor', label: 'Assigned mentor / faculty' },
+    { id: 'followup', label: 'Follow-up review date', type: 'date' }
+  ], () => {
+    closeModal();
+    toast('Support plan created for ' + studentName + '. Notifications dispatched.');
+  });
+}
+
+function bulk() {
+  return head('Bulk student import', 'Upload a CSV file to preview and import institutional student batches.') +
+    `<div class="card" style="max-width:720px;">
+      <div class="notice">
+        <b>Expected CSV format:</b> roll_number, name, email, department, batch
+      </div>
+      <div class="field" style="margin-top:16px;">
+        <label>Choose CSV file</label>
+        <input id="csvFile" type="file" accept=".csv" onchange="previewCSV(this)">
+      </div>
+      <div id="csvPreview" class="muted" style="margin:12px 0;">No file selected.</div>
+      <div style="display:flex;gap:10px;margin-top:16px;">
+        <button class="btn" onclick="importParsedCSV()">Import students</button>
+        <button class="btn secondary" onclick="downloadSampleCSV()">Download sample CSV</button>
+      </div>
+    </div>`;
+}
+
+let pendingParsedCSV = [];
+
+function previewCSV(input) {
+  const file = input.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = () => {
+    const lines = reader.result.split(/\r?\n/).filter(Boolean);
+    pendingParsedCSV = lines.map(l => l.split(',').map(s => s.trim().replace(/^"|"$/g, '')));
+    const previewRows = pendingParsedCSV.slice(0, 5);
+    document.getElementById('csvPreview').innerHTML = `
+      <b>CSV Preview (first 5 rows):</b>
+      <pre style="background:var(--bg-subtle);padding:12px;border-radius:8px;font-size:12px;overflow-x:auto;">${esc(previewRows.map(r => r.join(' | ')).join('\n'))}</pre>
+      <span class="muted">${pendingParsedCSV.length} total rows detected.</span>
+    `;
+  };
+  reader.readAsText(file);
+}
+
+function importParsedCSV() {
+  if (!pendingParsedCSV.length) {
+    toast('Please choose a CSV file first.');
+    return;
+  }
+  const startIndex = /roll|id|name/i.test(pendingParsedCSV[0].join(' ')) ? 1 : 0;
+  let count = 0;
+  pendingParsedCSV.slice(startIndex).forEach((r, idx) => {
+    if (r.length >= 2 && r[1]) {
+      data.students.push([
+        r[0] || 'IMP' + (idx + 1),
+        r[1],
+        (r[3] || 'CSE') + (r[4] ? ' · ' + r[4] : ' · 2024-A'),
+        '—',
+        'Active'
+      ]);
+      count++;
+    }
+  });
+  save();
+  pendingParsedCSV = [];
+  toast(count + ' student records successfully imported.');
+  render('Student Management');
+}
+
+function downloadSampleCSV() {
+  const content = 'roll_number,name,email,department,batch\r\nSTU101,Maya Sharma,maya@demo.com,CSE,2024-A\r\nSTU102,David Chen,david@demo.com,IT,2024-A\r\nSTU103,Aarav Patel,aarav@demo.com,ECE,2025-A';
+  downloadBlobCSV('sample_students.csv', content);
+}
+
+function monitoring() {
+  return head('System monitoring', 'Live health diagnostics and performance indicators for the evaluation cluster.') +
+    stats([
+      ['Cluster health', 'Healthy', '✓', 'All 12 nodes online'],
+      ['API uptime', '99.8%', '⌁', 'Last 90 days'],
+      ['Queue depth', '12', '⇅', 'Normal range (< 50)'],
+      ['Active sessions', '342', '♙', 'Concurrent users']
+    ]) +
+    `<div class="card">
+      <div class="card-head">
+        <h3>Service health</h3>
+        <span class="pill">Operational</span>
+      </div>
+      ${[
+        'Web Application Frontend & Gateway',
+        'Authentication & Session Service',
+        'Judge Worker Pool (Sandboxed Execution)',
+        'PostgreSQL Primary Cluster',
+        'Notification & Email Dispatcher'
+      ].map(x => `
+        <div class="problem">
+          <b style="color:var(--text);">${x}</b>
+          <span class="pill">Operational</span>
+        </div>
+      `).join('')}
+    </div>`;
+}
+
+function modalForm(title, fields, onSave) {
+  const body = fields.map(f => `
+    <div class="field">
+      <label>${esc(f.label)}</label>
+      <input id="formField_${f.id}" ${f.type === 'date' ? 'type="date"' : 'type="text"'} value="${esc(f.value || '')}" placeholder="${esc(f.placeholder || '')}">
+    </div>
+  `).join('');
+
+  document.getElementById('modalRoot').innerHTML = `
+    <div class="modal-back" onclick="if(event.target===this)closeModal()">
+      <div class="modal">
+        <h2>${esc(title)}</h2>
+        <div id="modalBody">${body}</div>
+        <div class="modal-actions">
+          <button class="btn ghost" onclick="closeModal()">Cancel</button>
+          <button class="btn" id="modalSaveBtn">Save</button>
+        </div>
+      </div>
+    </div>
+  `;
+
+  document.getElementById('modalSaveBtn').onclick = () => {
+    const values = {};
+    let valid = true;
+    fields.forEach(f => {
+      const el = document.getElementById('formField_' + f.id);
+      values[f.id] = el.value.trim();
+      if (!values[f.id] && f.required !== false) {
+        el.focus();
+        valid = false;
+      }
+    });
+    if (!valid) {
+      toast('Please fill out all required fields.');
+      return;
+    }
+    onSave(values);
+  };
+}
+
+function openModal(title) {
+  document.getElementById('modalRoot').innerHTML = `
+    <div class="modal-back" onclick="if(event.target===this)closeModal()">
+      <div class="modal">
+        <h2>${esc(title)}</h2>
+        <div id="modalBody"></div>
+        <div class="modal-actions" id="modalActions">
+          <button class="btn ghost" onclick="closeModal()">Close</button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function closeModal() {
+  if (testTimerInterval) clearInterval(testTimerInterval);
+  document.getElementById('modalRoot').innerHTML = '';
+}
+
+function toggleTheme() {
+  document.body.classList.toggle('dark');
+  const isDark = document.body.classList.contains('dark');
+  localStorage.setItem('ccTheme', isDark ? 'dark' : 'light');
+  toast(isDark ? 'Dark theme enabled' : 'Light theme enabled');
+}
+
+function downloadBlobCSV(filename, csvContent) {
+  const blob = new Blob(['\ufeff' + csvContent], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+  toast('File ' + filename + ' downloaded.');
+}
+
+
+
+// Initial session restore
+if (localStorage.getItem('ccTheme') === 'dark') {
+  document.body.classList.add('dark');
+}
+
+const savedRole = localStorage.getItem('ccRole');
+if (savedRole && roles[savedRole]) {
+  role = savedRole;
+  openApp();
+}
+
+/* ========================================================
+   HIGH-LEVEL INTERACTIVE MOTION & CANVAS ENGINES
+   ======================================================== */
+
+// 1. Interactive Constellation Particle Canvas for Login Art
+(function initHeroCanvas() {
+  const canvas = document.getElementById('heroCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let width, height, animationFrame;
+  let mouse = { x: -1000, y: -1000, radius: 150, active: false };
+
+  function resize() {
+    width = canvas.width = canvas.parentElement.offsetWidth;
+    height = canvas.height = canvas.parentElement.offsetHeight;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  canvas.parentElement.addEventListener('mousemove', e => {
+    const rect = canvas.getBoundingClientRect();
+    mouse.x = e.clientX - rect.left;
+    mouse.y = e.clientY - rect.top;
+    mouse.active = true;
+  });
+  canvas.parentElement.addEventListener('mouseleave', () => {
+    mouse.active = false;
+  });
+  canvas.parentElement.addEventListener('click', e => {
+    const rect = canvas.getBoundingClientRect();
+    const cx = e.clientX - rect.left;
+    const cy = e.clientY - rect.top;
+    for (let i = 0; i < 16; i++) {
+      const angle = Math.random() * Math.PI * 2;
+      const speed = 1.8 + Math.random() * 3.5;
+      particles.push(new Particle(cx, cy, Math.cos(angle) * speed, Math.sin(angle) * speed, true));
+    }
+  });
+
+  class Particle {
+    constructor(x, y, vx, vy, isBurst = false) {
+      this.x = x != null ? x : Math.random() * width;
+      this.y = y != null ? y : Math.random() * height;
+      this.vx = vx != null ? vx : (Math.random() - 0.5) * 0.75;
+      this.vy = vy != null ? vy : (Math.random() - 0.5) * 0.75;
+      this.radius = isBurst ? 2 + Math.random() * 2 : 1.6 + Math.random() * 1.8;
+      this.color = Math.random() > 0.4 ? 'rgba(41, 171, 226, ' : 'rgba(255, 255, 255, ';
+      this.baseAlpha = 0.45 + Math.random() * 0.45;
+      this.alpha = this.baseAlpha;
+      this.life = isBurst ? 70 : Infinity;
+      this.isBurst = isBurst;
+    }
+    update() {
+      this.x += this.vx;
+      this.y += this.vy;
+      if (this.isBurst) {
+        this.life--;
+        this.vx *= 0.96;
+        this.vy *= 0.96;
+        this.alpha = (this.life / 70) * this.baseAlpha;
+      } else {
+        if (this.x < 0 || this.x > width) this.vx *= -1;
+        if (this.y < 0 || this.y > height) this.vy *= -1;
+
+        if (mouse.active) {
+          const dx = mouse.x - this.x;
+          const dy = mouse.y - this.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < mouse.radius) {
+            const force = (1 - dist / mouse.radius) * 0.08;
+            this.x -= (dx / dist) * force * 14;
+            this.y -= (dy / dist) * force * 14;
+          }
+        }
+      }
+    }
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+      ctx.fillStyle = this.color + this.alpha + ')';
+      ctx.fill();
+    }
+  }
+
+  const particleCount = 48;
+  let particles = [];
+  for (let i = 0; i < particleCount; i++) {
+    particles.push(new Particle());
+  }
+
+  function loop() {
+    if (document.getElementById('login').classList.contains('hidden')) {
+      animationFrame = requestAnimationFrame(loop);
+      return;
+    }
+    ctx.clearRect(0, 0, width, height);
+
+    // Draw mouse glow
+    if (mouse.active) {
+      const g = ctx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, mouse.radius);
+      g.addColorStop(0, 'rgba(41, 171, 226, 0.18)');
+      g.addColorStop(1, 'rgba(41, 171, 226, 0)');
+      ctx.fillStyle = g;
+      ctx.beginPath();
+      ctx.arc(mouse.x, mouse.y, mouse.radius, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    // Connect lines
+    const maxDist = 110;
+    for (let i = 0; i < particles.length; i++) {
+      const p1 = particles[i];
+      for (let j = i + 1; j < particles.length; j++) {
+        const p2 = particles[j];
+        const dx = p1.x - p2.x;
+        const dy = p1.y - p2.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < maxDist) {
+          const alpha = (1 - dist / maxDist) * 0.28;
+          ctx.beginPath();
+          ctx.strokeStyle = `rgba(147, 197, 253, ${alpha})`;
+          ctx.lineWidth = 0.9;
+          ctx.moveTo(p1.x, p1.y);
+          ctx.lineTo(p2.x, p2.y);
+          ctx.stroke();
+        }
+      }
+
+      // Connect to mouse
+      if (mouse.active) {
+        const dx = p1.x - mouse.x;
+        const dy = p1.y - mouse.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < mouse.radius) {
+          const alpha = (1 - dist / mouse.radius) * 0.45;
+          ctx.beginPath();
+          ctx.strokeStyle = `rgba(41, 171, 226, ${alpha})`;
+          ctx.lineWidth = 1.2;
+          ctx.moveTo(p1.x, p1.y);
+          ctx.lineTo(mouse.x, mouse.y);
+          ctx.stroke();
+        }
+      }
+    }
+
+    particles = particles.filter(p => !p.isBurst || p.life > 0);
+    while (particles.length < particleCount) {
+      particles.push(new Particle());
+    }
+
+    particles.forEach(p => {
+      p.update();
+      p.draw();
+    });
+
+    animationFrame = requestAnimationFrame(loop);
+  }
+  loop();
+})();
+
+// 2. Interactive Tactile Click Ripple on Buttons & Chips
+document.addEventListener('click', e => {
+  const btn = e.target.closest('.btn, .demo-chip-btn');
+  if (!btn) return;
+  const rect = btn.getBoundingClientRect();
+  const circle = document.createElement('span');
+  const diameter = Math.max(rect.width, rect.height);
+  const radius = diameter / 2;
+
+  circle.style.width = circle.style.height = `${diameter}px`;
+  circle.style.left = `${e.clientX - rect.left - radius}px`;
+  circle.style.top = `${e.clientY - rect.top - radius}px`;
+  circle.classList.add('btn-ripple');
+
+  const existing = btn.querySelector('.btn-ripple');
+  if (existing) existing.remove();
+
+  btn.appendChild(circle);
+  setTimeout(() => circle.remove(), 500);
+});
+
+// 3. Interactive Mouse Spotlight Tracker on Cards
+document.addEventListener('mousemove', e => {
+  const card = e.target.closest('.card, .demo-chip-btn');
+  if (card) {
+    const rect = card.getBoundingClientRect();
+    card.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
+    card.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
+  }
+});
+
+// 4. Gliding Role Switcher Resize Sync
+window.addEventListener('resize', updateRoleIndicator);
+
+</script>
+<canvas id="confettiCanvas" style="position:fixed;inset:0;pointer-events:none;z-index:9999;width:100%;height:100%;"></canvas>
+</body>
+</html>
