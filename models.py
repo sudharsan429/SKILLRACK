@@ -473,16 +473,25 @@ class UserSetting(Base):
     email_notifications = Column(Boolean, default=True)
     daily_reminders = Column(Boolean, default=True)
     weekly_summary = Column(Boolean, default=False)
+    preferences_json = Column(Text, default='{}')
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     user = relationship('User', back_populates='settings_record')
 
     def to_dict(self):
+        import json
+        prefs = {}
+        try:
+            if self.preferences_json:
+                prefs = json.loads(self.preferences_json)
+        except Exception:
+            prefs = {}
         return {
             'id': self.id,
             'user_id': self.user_id,
             'theme': self.theme,
             'email_notifications': bool(self.email_notifications),
             'daily_reminders': bool(self.daily_reminders),
-            'weekly_summary': bool(self.weekly_summary)
+            'weekly_summary': bool(self.weekly_summary),
+            'preferences': prefs
         }

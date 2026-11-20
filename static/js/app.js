@@ -5562,51 +5562,587 @@ async function saveProfile() {
 /* ========================================================
    SETTINGS MODULE
    ======================================================== */
+/* ========================================================
+   ROLE-SPECIFIC SETTINGS ENGINE (4 Distinct Workspaces)
+   ======================================================== */
 async function renderSettings() {
-  const res = await fetch('/api/settings');
-  const json = await res.json();
-  const s = json.settings || {};
+  let s = {};
+  let currentRole = role || 'student';
+  try {
+    const res = await fetch('/api/settings');
+    const json = await res.json();
+    s = json.settings || {};
+    if (s.role) currentRole = s.role;
+  } catch(e) {}
 
-  return head('Settings', 'Personalize your SKILLRACK experience and system preferences.') +
-    `<div class="card" style="max-width:720px;">
-      <h3>Appearance</h3>
-      <p class="muted" style="margin:4px 0 14px;">Switch between light palette and dark high-contrast mode.</p>
-      <button class="btn secondary" onclick="toggleTheme()">Toggle light / dark theme</button>
-      <hr style="border:0;border-top:1px solid var(--line);margin:22px 0;">
-      <h3>Account preferences</h3>
-      <div style="margin:16px 0;">
-        <label style="display:flex;align-items:center;gap:8px;margin-bottom:10px;cursor:pointer;">
-          <input type="checkbox" id="setNotif" ${s.email_notifications ? 'checked' : ''}> Email notifications for assigned problems
-        </label>
-        <label style="display:flex;align-items:center;gap:8px;margin-bottom:10px;cursor:pointer;">
-          <input type="checkbox" id="setDaily" ${s.daily_reminders ? 'checked' : ''}> Daily streak reminders
-        </label>
-        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
-          <input type="checkbox" id="setWeekly" ${s.weekly_summary ? 'checked' : ''}> Weekly performance summary email
-        </label>
+  const p = s.preferences || {};
+  const theme = s.theme || document.documentElement.getAttribute('data-theme') || 'light';
+
+  // Role metadata
+  const roleMeta = {
+    student: {
+      badge: 'Student Workspace',
+      icon: '🎓',
+      title: 'Student Learning & Editor Preferences',
+      desc: 'Customize your coding sandbox, compiler defaults, test notifications, and leaderboard visibility.'
+    },
+    faculty: {
+      badge: 'Faculty Workspace',
+      icon: '👨‍🏫',
+      title: 'Faculty Evaluation & Course Settings',
+      desc: 'Configure automated code grading, similarity detection thresholds, batch alerts, and office hours.'
+    },
+    admin: {
+      badge: 'College Admin Workspace',
+      icon: '🏛️',
+      title: 'Institutional Governance & Lab Security Policies',
+      desc: 'Manage campus admission rules, test lab proctoring restrictions, accreditation exports, and audit controls.'
+    },
+    super: {
+      badge: 'Platform Super Admin',
+      icon: '⚡',
+      title: 'Multi-Tenant Infrastructure & System Controls',
+      desc: 'Configure sandboxed compiler clusters, global rate limiting, maintenance status, and platform feature flags.'
+    }
+  };
+
+  const meta = roleMeta[currentRole] || roleMeta.student;
+
+  let roleSpecificHTML = '';
+
+  if (currentRole === 'student') {
+    roleSpecificHTML = `
+      <div class="card" style="max-width:820px;margin-bottom:20px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+          <h3 style="margin:0;font-size:17px;color:#0071bc;">💻 Code Editor & Compiler Sandbox</h3>
+          <span class="badge" style="background:#eff6ff;color:#0071bc;font-weight:700;">Student Sandbox</span>
+        </div>
+        <p class="muted" style="margin-top:0;font-size:13px;">Tailor your IDE code editor font, default programming language, and auto-completion habits.</p>
+
+        <div class="form-grid-2" style="margin:16px 0;">
+          <div class="field">
+            <label for="setStudentLang"><strong>Default Programming Language</strong></label>
+            <select id="setStudentLang">
+              <option value="python" ${p.default_language === 'python' || !p.default_language ? 'selected' : ''}>Python 3.11</option>
+              <option value="java" ${p.default_language === 'java' ? 'selected' : ''}>Java 17 (OpenJDK)</option>
+              <option value="cpp" ${p.default_language === 'cpp' ? 'selected' : ''}>C++ 20 (GCC)</option>
+              <option value="c" ${p.default_language === 'c' ? 'selected' : ''}>C11 (GCC)</option>
+              <option value="javascript" ${p.default_language === 'javascript' ? 'selected' : ''}>JavaScript (Node.js)</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="setStudentFontSize"><strong>Editor Font Size</strong></label>
+            <select id="setStudentFontSize">
+              <option value="13px" ${p.font_size === '13px' ? 'selected' : ''}>13px (Compact)</option>
+              <option value="14px" ${p.font_size === '14px' || !p.font_size ? 'selected' : ''}>14px (Recommended)</option>
+              <option value="16px" ${p.font_size === '16px' ? 'selected' : ''}>16px (Medium)</option>
+              <option value="18px" ${p.font_size === '18px' ? 'selected' : ''}>18px (Large)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-grid-2" style="margin:14px 0;">
+          <div class="field">
+            <label for="setStudentTabSize"><strong>Tab Indentation Size</strong></label>
+            <select id="setStudentTabSize">
+              <option value="4" ${p.tab_size === '4' || !p.tab_size ? 'selected' : ''}>4 Spaces (Standard Python/Java)</option>
+              <option value="2" ${p.tab_size === '2' ? 'selected' : ''}>2 Spaces (Web/JS)</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="setStudentTheme"><strong>Editor Color Scheme</strong></label>
+            <select id="setStudentTheme">
+              <option value="vs-dark" ${p.editor_theme === 'vs-dark' || !p.editor_theme ? 'selected' : ''}>Dark IDE Console</option>
+              <option value="vs-light" ${p.editor_theme === 'vs-light' ? 'selected' : ''}>Light Clean Paper</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="background:#f8fafc;padding:14px;border-radius:8px;border:1px solid #e2e8f0;margin-top:14px;">
+          <label style="display:flex;align-items:center;gap:10px;margin-bottom:10px;cursor:pointer;font-size:13.5px;">
+            <input type="checkbox" id="setAutoClose" ${p.auto_close_brackets !== false ? 'checked' : ''} style="accent-color:#0071bc;cursor:pointer;">
+            <span>Auto-close brackets, quotation marks and parenthesis</span>
+          </label>
+          <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:13.5px;">
+            <input type="checkbox" id="setSoundEffects" ${p.sound_effects ? 'checked' : ''} style="accent-color:#0071bc;cursor:pointer;">
+            <span>Play subtle audio chime when all test cases pass</span>
+          </label>
+        </div>
       </div>
-      <button class="btn" onclick="saveSettings()">Save preferences</button>
-    </div>`;
+
+      <div class="card" style="max-width:820px;margin-bottom:20px;">
+        <h3 style="margin-top:0;font-size:17px;color:#0071bc;">🎯 Practice Tracks & Daily Assessment Alerts</h3>
+        <p class="muted" style="margin-top:0;font-size:13px;">Manage reminder frequency for daily coding challenges, scheduled 10 PM tests, and weekly summaries.</p>
+
+        <div style="margin:16px 0;display:grid;gap:12px;">
+          <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;">
+            <input type="checkbox" id="setDaily" ${s.daily_reminders !== false ? 'checked' : ''} style="accent-color:#0071bc;cursor:pointer;margin-top:3px;">
+            <div>
+              <b style="display:block;font-size:13.5px;">Daily 24-Hour Challenge Notification</b>
+              <span class="muted" style="font-size:12.5px;">Receive an alert when the new Daily Problem of the day goes live.</span>
+            </div>
+          </label>
+          <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;">
+            <input type="checkbox" id="setTestNotif" ${p.test_alerts !== false ? 'checked' : ''} style="accent-color:#0071bc;cursor:pointer;margin-top:3px;">
+            <div>
+              <b style="display:block;font-size:13.5px;">Daily Test Center (10:00 PM) Alert</b>
+              <span class="muted" style="font-size:12.5px;">15-minute countdown alert before scheduled institutional assessment windows.</span>
+            </div>
+          </label>
+          <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;">
+            <input type="checkbox" id="setNotif" ${s.email_notifications ? 'checked' : ''} style="accent-color:#0071bc;cursor:pointer;margin-top:3px;">
+            <div>
+              <b style="display:block;font-size:13.5px;">Faculty Assignment & Problem Bank Alerts</b>
+              <span class="muted" style="font-size:12.5px;">Immediate notifications whenever your batch instructor assigns new problems.</span>
+            </div>
+          </label>
+          <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;">
+            <input type="checkbox" id="setWeekly" ${s.weekly_summary ? 'checked' : ''} style="accent-color:#0071bc;cursor:pointer;margin-top:3px;">
+            <div>
+              <b style="display:block;font-size:13.5px;">Weekly Accuracy & Streak Digest</b>
+              <span class="muted" style="font-size:12.5px;">Weekly report showing total programs solved, acceptance rate, and streak status.</span>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <div class="card" style="max-width:820px;margin-bottom:20px;">
+        <h3 style="margin-top:0;font-size:17px;color:#0071bc;">🛡️ Privacy & Leaderboard Visibility</h3>
+        <div style="margin:14px 0;display:grid;gap:12px;">
+          <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;">
+            <input type="checkbox" id="setPublicLeaderboard" ${p.public_leaderboard !== false ? 'checked' : ''} style="accent-color:#0071bc;cursor:pointer;margin-top:3px;">
+            <div>
+              <b style="display:block;font-size:13.5px;">Show Profile on College Leaderboard</b>
+              <span class="muted" style="font-size:12.5px;">Display your points and programs solved count on the institutional leaderboard.</span>
+            </div>
+          </label>
+          <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;">
+            <input type="checkbox" id="setShareCode" ${p.share_code ? 'checked' : ''} style="accent-color:#0071bc;cursor:pointer;margin-top:3px;">
+            <div>
+              <b style="display:block;font-size:13.5px;">Peer Code Review Showcase</b>
+              <span class="muted" style="font-size:12.5px;">Allow accepted solutions to be showcased in peer solutions discussion tab.</span>
+            </div>
+          </label>
+        </div>
+      </div>
+    `;
+  } else if (currentRole === 'faculty') {
+    roleSpecificHTML = `
+      <div class="card" style="max-width:820px;margin-bottom:20px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+          <h3 style="margin:0;font-size:17px;color:#0071bc;">⚡ Automated Code Grading & Sandboxing</h3>
+          <span class="badge" style="background:#eff6ff;color:#0071bc;font-weight:700;">Faculty Evaluator</span>
+        </div>
+        <p class="muted" style="margin-top:0;font-size:13px;">Manage execution constraints, grading automation, and plagiarism analysis policies.</p>
+
+        <div class="form-grid-2" style="margin:16px 0;">
+          <div class="field">
+            <label for="setPlagiarismThreshold"><strong>Plagiarism & Similarity Threshold</strong></label>
+            <select id="setPlagiarismThreshold">
+              <option value="70" ${p.plagiarism_threshold === '70' ? 'selected' : ''}>Strict (Flag at &gt; 70% similarity)</option>
+              <option value="80" ${p.plagiarism_threshold === '80' || !p.plagiarism_threshold ? 'selected' : ''}>Standard (Flag at &gt; 80% similarity)</option>
+              <option value="90" ${p.plagiarism_threshold === '90' ? 'selected' : ''}>Lenient (Flag at &gt; 90% similarity)</option>
+              <option value="0" ${p.plagiarism_threshold === '0' ? 'selected' : ''}>Disabled</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="setExecTimeout"><strong>Student Code Execution Timeout</strong></label>
+            <select id="setExecTimeout">
+              <option value="2" ${p.exec_timeout === '2' ? 'selected' : ''}>2.0 Seconds (Strict)</option>
+              <option value="5" ${p.exec_timeout === '5' || !p.exec_timeout ? 'selected' : ''}>5.0 Seconds (Standard)</option>
+              <option value="10" ${p.exec_timeout === '10' ? 'selected' : ''}>10.0 Seconds (Data Intensive)</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="background:#f8fafc;padding:14px;border-radius:8px;border:1px solid #e2e8f0;margin-top:14px;display:grid;gap:12px;">
+          <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;">
+            <input type="checkbox" id="setAutoGrade" ${p.auto_grade !== false ? 'checked' : ''} style="accent-color:#0071bc;cursor:pointer;margin-top:3px;">
+            <div>
+              <b style="font-size:13.5px;">Real-Time Auto Evaluation</b>
+              <span class="muted" style="display:block;font-size:12.5px;">Evaluate all hidden and visible test cases immediately upon student submission.</span>
+            </div>
+          </label>
+          <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;">
+            <input type="checkbox" id="setLateSubmissions" ${p.allow_late_submissions ? 'checked' : ''} style="accent-color:#0071bc;cursor:pointer;margin-top:3px;">
+            <div>
+              <b style="font-size:13.5px;">Accept Late Test Submissions with Penalty</b>
+              <span class="muted" style="display:block;font-size:12.5px;">Allow students to submit after assessment deadline with 10% late penalty.</span>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <div class="card" style="max-width:820px;margin-bottom:20px;">
+        <h3 style="margin-top:0;font-size:17px;color:#0071bc;">📊 Batch Analytics & Student Interventions</h3>
+        <p class="muted" style="margin-top:0;font-size:13px;">Configure performance alert triggers and automated student support workflows.</p>
+
+        <div class="field" style="max-width:400px;margin-bottom:16px;">
+          <label for="setDefaultBatch"><strong>Primary Active Batch</strong></label>
+          <select id="setDefaultBatch">
+            <option value="2024-A" ${p.default_batch === '2024-A' || !p.default_batch ? 'selected' : ''}>2024 - Section A (CSE)</option>
+            <option value="2024-B" ${p.default_batch === '2024-B' ? 'selected' : ''}>2024 - Section B (CSE)</option>
+            <option value="2025-A" ${p.default_batch === '2025-A' ? 'selected' : ''}>2025 - Section A (IT)</option>
+            <option value="all" ${p.default_batch === 'all' ? 'selected' : ''}>All Assigned Batches</option>
+          </select>
+        </div>
+
+        <div style="margin:14px 0;display:grid;gap:12px;">
+          <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;">
+            <input type="checkbox" id="setWeakStudentAlert" ${p.weak_student_alert !== false ? 'checked' : ''} style="accent-color:#0071bc;cursor:pointer;margin-top:3px;">
+            <div>
+              <b style="font-size:13.5px;">Daily Weak Students & Support Digest</b>
+              <span class="muted" style="display:block;font-size:12.5px;">Receive summary notification of students scoring below 60% on recent tests.</span>
+            </div>
+          </label>
+          <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;">
+            <input type="checkbox" id="setBatchMilestoneAlert" ${p.batch_milestone_alert !== false ? 'checked' : ''} style="accent-color:#0071bc;cursor:pointer;margin-top:3px;">
+            <div>
+              <b style="font-size:13.5px;">Test Completion Milestone Alerts</b>
+              <span class="muted" style="display:block;font-size:12.5px;">Notify when &gt; 80% of students in assigned batch have completed active tests.</span>
+            </div>
+          </label>
+          <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;">
+            <input type="checkbox" id="setNotif" ${s.email_notifications ? 'checked' : ''} style="accent-color:#0071bc;cursor:pointer;margin-top:3px;">
+            <div>
+              <b style="font-size:13.5px;">Real-Time Faculty Email Notifications</b>
+              <span class="muted" style="display:block;font-size:12.5px;">Instant email notification on assignment submissions and test anomalies.</span>
+            </div>
+          </label>
+        </div>
+      </div>
+    `;
+  } else if (currentRole === 'admin') {
+    roleSpecificHTML = `
+      <div class="card" style="max-width:820px;margin-bottom:20px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+          <h3 style="margin:0;font-size:17px;color:#0071bc;">🏛️ Institutional Campus Policies</h3>
+          <span class="badge" style="background:#eff6ff;color:#0071bc;font-weight:700;">College Admin</span>
+        </div>
+        <p class="muted" style="margin-top:0;font-size:13px;">Manage institutional campus parameters, enrollment approvals, and test environment rules.</p>
+
+        <div class="form-grid-2" style="margin:16px 0;">
+          <div class="field">
+            <label for="setCollegeName"><strong>Institution Name</strong></label>
+            <input id="setCollegeName" value="${esc(p.college_name || 'Inovate Institute of Technology')}" placeholder="College Name">
+          </div>
+          <div class="field">
+            <label for="setCampusCode"><strong>Campus Institutional Code</strong></label>
+            <input id="setCampusCode" value="${esc(p.campus_code || 'IIT-2024')}" placeholder="e.g. IIT-2024">
+          </div>
+        </div>
+
+        <div style="background:#f8fafc;padding:14px;border-radius:8px;border:1px solid #e2e8f0;margin-top:14px;display:grid;gap:12px;">
+          <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;">
+            <input type="checkbox" id="setAutoApprove" ${p.auto_approve !== false ? 'checked' : ''} style="accent-color:#0071bc;cursor:pointer;margin-top:3px;">
+            <div>
+              <b style="font-size:13.5px;">Auto-Approve Student Registrations</b>
+              <span class="muted" style="display:block;font-size:12.5px;">Instantly activate students using validated college institutional email addresses.</span>
+            </div>
+          </label>
+          <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;">
+            <input type="checkbox" id="setEnforceRollSyntax" ${p.enforce_roll_syntax ? 'checked' : ''} style="accent-color:#0071bc;cursor:pointer;margin-top:3px;">
+            <div>
+              <b style="font-size:13.5px;">Enforce Strict Departmental Roll Number Syntax</b>
+              <span class="muted" style="display:block;font-size:12.5px;">Require exact roll number regex format (e.g. 210421244xxx) during CSV bulk import.</span>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <div class="card" style="max-width:820px;margin-bottom:20px;">
+        <h3 style="margin-top:0;font-size:17px;color:#0071bc;">🔒 Exam Center & Proctoring Security</h3>
+        <p class="muted" style="margin-top:0;font-size:13px;">Configure online exam lab integrity, IP subnet restrictions, and session safeguards.</p>
+
+        <div class="form-grid-2" style="margin:16px 0;">
+          <div class="field">
+            <label for="setSessionTimeout"><strong>Inactivity Auto-Logout</strong></label>
+            <select id="setSessionTimeout">
+              <option value="15" ${p.session_timeout === '15' ? 'selected' : ''}>15 Minutes</option>
+              <option value="30" ${p.session_timeout === '30' || !p.session_timeout ? 'selected' : ''}>30 Minutes (Recommended)</option>
+              <option value="60" ${p.session_timeout === '60' ? 'selected' : ''}>60 Minutes</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="setExamSubnet"><strong>Lab Subnet Restriction (Optional)</strong></label>
+            <input id="setExamSubnet" value="${esc(p.exam_subnet || '192.168.1.0/24')}" placeholder="e.g. 192.168.1.0/24 or leave blank">
+          </div>
+        </div>
+
+        <div style="margin:14px 0;display:grid;gap:12px;">
+          <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;">
+            <input type="checkbox" id="setProctorLock" ${p.proctor_lock !== false ? 'checked' : ''} style="accent-color:#0071bc;cursor:pointer;margin-top:3px;">
+            <div>
+              <b style="font-size:13.5px;">Exam Mode: Tab Switching & Copy-Paste Guard</b>
+              <span class="muted" style="display:block;font-size:12.5px;">Detect and log window blur events and disable clipboard copying inside code tests.</span>
+            </div>
+          </label>
+          <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;">
+            <input type="checkbox" id="setNaacExport" ${p.naac_export !== false ? 'checked' : ''} style="accent-color:#0071bc;cursor:pointer;margin-top:3px;">
+            <div>
+              <b style="font-size:13.5px;">Automated Weekly Accreditation (NBA/NAAC) Report</b>
+              <span class="muted" style="display:block;font-size:12.5px;">Generate departmental placement & coding mastery compliance summary every Monday.</span>
+            </div>
+          </label>
+          <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;">
+            <input type="checkbox" id="setNotif" ${s.email_notifications ? 'checked' : ''} style="accent-color:#0071bc;cursor:pointer;margin-top:3px;">
+            <div>
+              <b style="font-size:13.5px;">Administrative System Alerts</b>
+              <span class="muted" style="display:block;font-size:12.5px;">Receive notifications on bulk user imports and college license renewals.</span>
+            </div>
+          </label>
+        </div>
+      </div>
+    `;
+  } else if (currentRole === 'super') {
+    roleSpecificHTML = `
+      <div class="card" style="max-width:820px;margin-bottom:20px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+          <h3 style="margin:0;font-size:17px;color:#0071bc;">⚡ Compiler Sandbox Cluster & Infrastructure</h3>
+          <span class="badge" style="background:#eff6ff;color:#0071bc;font-weight:700;">Super Admin Platform</span>
+        </div>
+        <p class="muted" style="margin-top:0;font-size:13px;">Manage multi-tenant code judge sandboxing clusters, rate limits, and cluster diagnostics.</p>
+
+        <div class="form-grid-2" style="margin:16px 0;">
+          <div class="field">
+            <label for="setSandboxEngine"><strong>Sandboxed Compiler Execution Engine</strong></label>
+            <select id="setSandboxEngine">
+              <option value="subprocess" ${p.sandbox_engine === 'subprocess' || !p.sandbox_engine ? 'selected' : ''}>Isolated Subprocess Cluster (Native High Performance)</option>
+              <option value="docker" ${p.sandbox_engine === 'docker' ? 'selected' : ''}>Docker Container Pool (Strict Containerization)</option>
+              <option value="gvisor" ${p.sandbox_engine === 'gvisor' ? 'selected' : ''}>gVisor MicroVMs (Enterprise Isolation)</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="setGlobalRateLimit"><strong>Global Execution Rate Limit</strong></label>
+            <select id="setGlobalRateLimit">
+              <option value="30" ${p.rate_limit === '30' ? 'selected' : ''}>30 code runs/min per student</option>
+              <option value="60" ${p.rate_limit === '60' || !p.rate_limit ? 'selected' : ''}>60 code runs/min (Standard)</option>
+              <option value="120" ${p.rate_limit === '120' ? 'selected' : ''}>120 code runs/min (High Concurrency)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-grid-2" style="margin:14px 0;">
+          <div class="field">
+            <label for="setLogLevel"><strong>Platform System Logging Level</strong></label>
+            <select id="setLogLevel">
+              <option value="info" ${p.log_level === 'info' || !p.log_level ? 'selected' : ''}>INFO (Standard Operations)</option>
+              <option value="warn" ${p.log_level === 'warn' ? 'selected' : ''}>WARN & ERROR Only</option>
+              <option value="debug" ${p.log_level === 'debug' ? 'selected' : ''}>DEBUG (Full Subprocess Tracing)</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="setBackupCadence"><strong>Automated Database Backup Cadence</strong></label>
+            <select id="setBackupCadence">
+              <option value="daily" ${p.backup_cadence === 'daily' || !p.backup_cadence ? 'selected' : ''}>Daily Automated Snapshot (Midnight)</option>
+              <option value="weekly" ${p.backup_cadence === 'weekly' ? 'selected' : ''}>Weekly Rolling Backup</option>
+              <option value="hourly" ${p.backup_cadence === 'hourly' ? 'selected' : ''}>Hourly Transaction Journal</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="background:#fee2e2;padding:14px;border-radius:8px;border:1px solid #fca5a5;margin-top:14px;">
+          <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;">
+            <input type="checkbox" id="setMaintenanceMode" ${p.maintenance_mode ? 'checked' : ''} style="accent-color:#b91c1c;cursor:pointer;margin-top:3px;">
+            <div>
+              <b style="color:#991b1b;font-size:13.5px;">Platform Maintenance Mode</b>
+              <span style="color:#7f1d1d;display:block;font-size:12.5px;">Put judge and submission endpoints into read-only mode during major platform deployments.</span>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <div class="card" style="max-width:820px;margin-bottom:20px;">
+        <h3 style="margin-top:0;font-size:17px;color:#0071bc;">🌐 Multi-Tenant Governance & Feature Flags</h3>
+        <p class="muted" style="margin-top:0;font-size:13px;">Global feature toggles across all registered colleges and institutional workspaces.</p>
+
+        <div style="margin:14px 0;display:grid;gap:12px;">
+          <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;">
+            <input type="checkbox" id="setAllowCollegeSelfReg" ${p.allow_college_self_reg !== false ? 'checked' : ''} style="accent-color:#0071bc;cursor:pointer;margin-top:3px;">
+            <div>
+              <b style="font-size:13.5px;">Allow New College Self-Registration</b>
+              <span class="muted" style="display:block;font-size:12.5px;">Enable institutional signups from public landing page for accredited universities.</span>
+            </div>
+          </label>
+          <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;">
+            <input type="checkbox" id="setAuditLogging" ${p.audit_logging !== false ? 'checked' : ''} style="accent-color:#0071bc;cursor:pointer;margin-top:3px;">
+            <div>
+              <b style="font-size:13.5px;">Immutable Super Admin Audit Trail</b>
+              <span class="muted" style="display:block;font-size:12.5px;">Log all role escalations, deletions, and college tier adjustments to secure log stream.</span>
+            </div>
+          </label>
+          <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;">
+            <input type="checkbox" id="setEnableLACS" ${p.enable_lacs !== false ? 'checked' : ''} style="accent-color:#0071bc;cursor:pointer;margin-top:3px;">
+            <div>
+              <b style="font-size:13.5px;">Live Assisted Coding Sessions (LACS) Module</b>
+              <span class="muted" style="display:block;font-size:12.5px;">Enable real-time peer & faculty interactive coding room features across all student accounts.</span>
+            </div>
+          </label>
+          <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;">
+            <input type="checkbox" id="setWeekly" ${s.weekly_summary ? 'checked' : ''} style="accent-color:#0071bc;cursor:pointer;margin-top:3px;">
+            <div>
+              <b style="font-size:13.5px;">Weekly Platform Infrastructure Telemetry Report</b>
+              <span class="muted" style="display:block;font-size:12.5px;">Email weekly CPU, RAM, database query health, and student active session metrics.</span>
+            </div>
+          </label>
+        </div>
+      </div>
+    `;
+  }
+
+  // Universal Appearance Section (for all roles)
+  const appearanceHTML = `
+    <div class="card" style="max-width:820px;margin-bottom:20px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+        <h3 style="margin:0;font-size:17px;color:#0071bc;">🎨 Interface & Display Theme</h3>
+        <span class="badge" style="background:#eff6ff;color:#0071bc;font-weight:600;">Active: ${theme.toUpperCase()}</span>
+      </div>
+      <p class="muted" style="margin-top:0;font-size:13px;">Toggle between the project standard clean light palette and high-contrast night mode.</p>
+      <div style="display:flex;align-items:center;gap:14px;margin-top:14px;">
+        <button class="btn secondary" onclick="toggleTheme()" style="display:inline-flex;align-items:center;gap:8px;">
+          <span>◐</span> Toggle Light / Dark Mode
+        </button>
+        <span class="muted" style="font-size:12.5px;">Theme automatically synchronizes with database profile.</span>
+      </div>
+    </div>
+  `;
+
+  // Action Save Button
+  const actionsHTML = `
+    <div style="max-width:820px;display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:10px;padding:16px 20px;background:#ffffff;border:1px solid #e2e8f0;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.04);">
+      <div>
+        <b style="font-size:14px;color:#0f172a;">Save ${meta.badge} Changes</b>
+        <span class="muted" style="display:block;font-size:12px;">Updates are committed instantly to your SQLite configuration.</span>
+      </div>
+      <button class="btn btn-primary-gradient" id="btnSaveRoleSettings" onclick="saveRoleSettings('${currentRole}')" style="padding:10px 24px;font-size:13.5px;">
+        Save ${meta.badge} Preferences →
+      </button>
+    </div>
+  `;
+
+  return head(meta.title, meta.desc) + roleSpecificHTML + appearanceHTML + actionsHTML;
 }
 
-async function saveSettings() {
-  const email_notifications = document.getElementById('setNotif').checked;
-  const daily_reminders = document.getElementById('setDaily').checked;
-  const weekly_summary = document.getElementById('setWeekly').checked;
+async function saveRoleSettings(currentRole) {
+  const btn = document.getElementById('btnSaveRoleSettings');
+  const origText = btn ? btn.textContent : 'Save Preferences';
+  if (btn) {
+    btn.disabled = true;
+    btn.textContent = 'Saving to database...';
+  }
+
+  const payload = {
+    role: currentRole,
+    preferences: {}
+  };
+
+  const setNotif = document.getElementById('setNotif');
+  if (setNotif) payload.email_notifications = setNotif.checked;
+  const setDaily = document.getElementById('setDaily');
+  if (setDaily) payload.daily_reminders = setDaily.checked;
+  const setWeekly = document.getElementById('setWeekly');
+  if (setWeekly) payload.weekly_summary = setWeekly.checked;
+
+  if (currentRole === 'student') {
+    const lang = document.getElementById('setStudentLang');
+    if (lang) payload.preferences.default_language = lang.value;
+    const font = document.getElementById('setStudentFontSize');
+    if (font) payload.preferences.font_size = font.value;
+    const tab = document.getElementById('setStudentTabSize');
+    if (tab) payload.preferences.tab_size = tab.value;
+    const edTheme = document.getElementById('setStudentTheme');
+    if (edTheme) payload.preferences.editor_theme = edTheme.value;
+    const autoClose = document.getElementById('setAutoClose');
+    if (autoClose) payload.preferences.auto_close_brackets = autoClose.checked;
+    const sound = document.getElementById('setSoundEffects');
+    if (sound) payload.preferences.sound_effects = sound.checked;
+    const testAlert = document.getElementById('setTestNotif');
+    if (testAlert) payload.preferences.test_alerts = testAlert.checked;
+    const pubLeader = document.getElementById('setPublicLeaderboard');
+    if (pubLeader) payload.preferences.public_leaderboard = pubLeader.checked;
+    const shareCode = document.getElementById('setShareCode');
+    if (shareCode) payload.preferences.share_code = shareCode.checked;
+  } else if (currentRole === 'faculty') {
+    const plag = document.getElementById('setPlagiarismThreshold');
+    if (plag) payload.preferences.plagiarism_threshold = plag.value;
+    const timeout = document.getElementById('setExecTimeout');
+    if (timeout) payload.preferences.exec_timeout = timeout.value;
+    const autoGrade = document.getElementById('setAutoGrade');
+    if (autoGrade) payload.preferences.auto_grade = autoGrade.checked;
+    const late = document.getElementById('setLateSubmissions');
+    if (late) payload.preferences.allow_late_submissions = late.checked;
+    const batch = document.getElementById('setDefaultBatch');
+    if (batch) payload.preferences.default_batch = batch.value;
+    const weak = document.getElementById('setWeakStudentAlert');
+    if (weak) payload.preferences.weak_student_alert = weak.checked;
+    const mile = document.getElementById('setBatchMilestoneAlert');
+    if (mile) payload.preferences.batch_milestone_alert = mile.checked;
+  } else if (currentRole === 'admin') {
+    const colName = document.getElementById('setCollegeName');
+    if (colName) payload.preferences.college_name = colName.value.trim();
+    const camCode = document.getElementById('setCampusCode');
+    if (camCode) payload.preferences.campus_code = camCode.value.trim();
+    const autoApp = document.getElementById('setAutoApprove');
+    if (autoApp) payload.preferences.auto_approve = autoApp.checked;
+    const rollSyntax = document.getElementById('setEnforceRollSyntax');
+    if (rollSyntax) payload.preferences.enforce_roll_syntax = rollSyntax.checked;
+    const sessTimeout = document.getElementById('setSessionTimeout');
+    if (sessTimeout) payload.preferences.session_timeout = sessTimeout.value;
+    const subnet = document.getElementById('setExamSubnet');
+    if (subnet) payload.preferences.exam_subnet = subnet.value.trim();
+    const proctor = document.getElementById('setProctorLock');
+    if (proctor) payload.preferences.proctor_lock = proctor.checked;
+    const naac = document.getElementById('setNaacExport');
+    if (naac) payload.preferences.naac_export = naac.checked;
+  } else if (currentRole === 'super') {
+    const engine = document.getElementById('setSandboxEngine');
+    if (engine) payload.preferences.sandbox_engine = engine.value;
+    const rate = document.getElementById('setGlobalRateLimit');
+    if (rate) payload.preferences.rate_limit = rate.value;
+    const logLvl = document.getElementById('setLogLevel');
+    if (logLvl) payload.preferences.log_level = logLvl.value;
+    const backup = document.getElementById('setBackupCadence');
+    if (backup) payload.preferences.backup_cadence = backup.value;
+    const maint = document.getElementById('setMaintenanceMode');
+    if (maint) payload.preferences.maintenance_mode = maint.checked;
+    const colSelf = document.getElementById('setAllowCollegeSelfReg');
+    if (colSelf) payload.preferences.allow_college_self_reg = colSelf.checked;
+    const audit = document.getElementById('setAuditLogging');
+    if (audit) payload.preferences.audit_logging = audit.checked;
+    const lacs = document.getElementById('setEnableLACS');
+    if (lacs) payload.preferences.enable_lacs = lacs.checked;
+  }
 
   try {
     const res = await fetch('/api/settings', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email_notifications, daily_reminders, weekly_summary })
+      body: JSON.stringify(payload)
     });
     const json = await res.json();
     if (json.success) {
-      toast('Preferences saved to database.');
+      toast(`${currentRole.toUpperCase()} settings saved successfully.`);
+      if (currentRole === 'student' && payload.preferences.font_size) {
+        const ed = document.getElementById('codeEditor');
+        if (ed) ed.style.fontSize = payload.preferences.font_size;
+      }
+    } else {
+      toast(json.error || 'Failed to save settings.');
     }
   } catch(e) {
-    toast('Error saving settings.');
+    toast('Error saving settings to database.');
+  } finally {
+    if (btn) {
+      btn.disabled = false;
+      btn.textContent = origText;
+    }
   }
+}
+window.saveRoleSettings = saveRoleSettings;
+
+// Backward-compatible alias
+async function saveSettings() {
+  await saveRoleSettings(role || 'student');
 }
 
 async function toggleTheme() {
