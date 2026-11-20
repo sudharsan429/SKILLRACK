@@ -55,7 +55,11 @@ def create_faculty():
 
     if not faculty_code:
         count = s.query(Faculty).count() + 1
-        faculty_code = f"FAC{count:03d}"
+        candidate = f"FAC{count:03d}"
+        while s.query(User).filter_by(roll_number=candidate).first() or s.query(Faculty).filter_by(faculty_code=candidate).first():
+            count += 1
+            candidate = f"FAC{count:03d}"
+        faculty_code = candidate
 
     try:
         user = User(

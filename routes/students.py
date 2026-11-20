@@ -48,7 +48,7 @@ def add_student():
     # Generate student code
     last_id = s.query(Student).count() + 101
     code = f"STU{last_id}"
-    while s.query(Student).filter_by(student_code=code).first():
+    while s.query(User).filter_by(roll_number=code).first() or s.query(Student).filter_by(student_code=code).first():
         last_id += 1
         code = f"STU{last_id}"
 
@@ -57,7 +57,8 @@ def add_student():
         email = f"{clean_name}{last_id}@demo.com"
 
     # Check if email exists
-    if s.query(User).filter_by(email=email).first():
+    while s.query(User).filter_by(email=email).first():
+        last_id += 1
         email = f"student_{last_id}@demo.com"
 
     # Parse details e.g. "CSE · A" -> dept: CSE, batch: 2024-A
