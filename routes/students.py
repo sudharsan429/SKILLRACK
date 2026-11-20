@@ -127,38 +127,80 @@ def update_student(id):
         return jsonify({'success': False, 'error': 'Student not found.'}), 404
 
     name = data.get('name', '').strip()
+    email = data.get('email', '').strip()
+    code = (data.get('student_code') or data.get('code') or '').strip()
+    department = data.get('department', '').strip()
+    batch = data.get('batch', '').strip()
     details = data.get('details', '').strip()
     score = data.get('score', '').strip()
     status = data.get('status', '').strip()
-    department = data.get('department', '').strip()
-    batch = data.get('batch', '').strip()
+
+    # Validate email uniqueness if changed
+    if email and email.lower() != (student.email or '').lower():
+        existing_u = s.query(User).filter(User.email.ilike(email), User.id != student.user_id).first()
+        if existing_u:
+            return jsonify({'success': False, 'error': f"Email '{email}' is already in use by another user."}), 409
+        student.email = email
+        if student.user:
+            student.user.email = email
+
+    # Validate student code uniqueness if changed
+    if code and code.upper() != (student.student_code or '').upper():
+        code_upper = code.upper()
+        existing_u = s.query(User).filter(User.roll_number.ilike(code_upper), User.id != student.user_id).first()
+        existing_s = s.query(Student).filter(Student.student_code.ilike(code_upper), Student.id != student.id).first()
+        if existing_u or existing_s:
+            return jsonify({'success': False, 'error': f"Roll Number '{code}' is already assigned to another student."}), 409
+        student.student_code = code_upper
+        if student.user:
+            student.user.roll_number = code_upper
 
     if name:
         student.name = name
         if student.user:
             student.user.name = name
-    if details:
-        student.details = details
-        parts = [p.strip() for p in details.split('·')]
-        if len(parts) > 0:
-            student.department = parts[0]
-        if len(parts) > 1:
-            student.batch = parts[1]
-    if score:
-        student.score = score
-    if status:
-        student.status = status
+
     if department:
         student.department = department
+
     if batch:
         student.batch = batch
 
-    s.commit()
-    return jsonify({
-        'success': True,
-        'message': 'Student record updated successfully.',
-        'student': student.to_dict()
-    })
+    if details:
+        student.details = details
+    elif department or batch:
+        student.details = f"🎓 College · {student.department} ({student.batch})"
+
+    if score:
+        student.score = score
+
+    if status:
+        student.status = status
+
+    # Also keep linked Profile in sync
+    prof = s.query(Profile).filter_by(user_id=student.user_id).first()
+    if prof:
+        if name:
+            prof.full_name = name
+        if email:
+            prof.email = email
+        if code:
+            prof.roll_number = student.student_code
+        if department:
+            prof.department = department
+        if batch:
+            prof.batch = batch
+
+    try:
+        s.commit()
+        return jsonify({
+            'success': True,
+            'message': f"Student '{student.name}' updated successfully.",
+            'student': student.to_dict()
+        })
+    except Exception as e:
+        s.rollback()
+        return jsonify({'success': False, 'error': str(e)}), 500
 
 @students_bp.route('/api/students/<int:id>', methods=['DELETE'])
 @login_required

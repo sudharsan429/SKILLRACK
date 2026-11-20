@@ -4260,7 +4260,7 @@ const managementEndpoints = {
 
 async function renderManagement(label) {
   const endpoint = managementEndpoints[label] || '/api/students';
-  const res = await fetch(endpoint);
+  const res = await fetch(`${endpoint}?_t=${Date.now()}`, { cache: 'no-store' });
   const json = await res.json();
 
   const isStudents = label === 'Students';
@@ -4309,7 +4309,7 @@ async function renderManagement(label) {
     if (isStudents) {
       col1 = r.student_code || `STU${rId}`;
       col2 = r.name || 'Unnamed Student';
-      col3 = r.details || (r.department ? `${r.department} · ${r.batch || '2024'}` : 'CSE · 2024-A');
+      col3 = (r.department && r.batch) ? `🎓 College · ${r.department} (${r.batch})` : (r.details || `${r.department || 'CSE'} · ${r.batch || '2024-A'}`);
       col4 = r.score || '85%';
       col5 = r.status || 'Active';
     } else if (isFaculty) {
@@ -4443,15 +4443,15 @@ function addRecord(label) {
         body: JSON.stringify(values)
       });
       const json = await res.json();
-      closeModal();
       if (json.success) {
+        closeModal();
         toast(json.message || 'Record added successfully.');
-        render(current);
+        await render(current);
       } else {
         toast(json.error || 'Failed to add record.');
       }
     } catch(e) {
-      toast('Error saving record.');
+      toast('Error saving record: ' + (e.message || 'Server error'));
     }
   });
 }
@@ -4492,23 +4492,30 @@ function editRecord(label, id) {
       { id: 'name', label: 'Faculty Name', value: row.name },
       { id: 'email', label: 'Email', value: row.email },
       { id: 'department', label: 'Department', value: row.department },
-      { id: 'details', label: 'Title / Role', value: row.details }
+      { id: 'details', label: 'Title / Role', value: row.details },
+      { id: 'status', label: 'Status (Active, On leave)', value: row.status || 'Active' }
     ];
   } else if (isColleges) {
     fields = [
       { id: 'name', label: 'College Name', value: row.name },
       { id: 'location', label: 'Location', value: row.location },
-      { id: 'licence_expiry', label: 'Expiry Date', value: row.licence_expiry, type: 'date' }
+      { id: 'licence_expiry', label: 'Expiry Date', value: row.licence_expiry, type: 'date' },
+      { id: 'status', label: 'Status', value: row.status || 'Active' }
     ];
   } else if (isBatches) {
     fields = [
       { id: 'name', label: 'Batch Name', value: row.name },
-      { id: 'student_count', label: 'Student Count', value: String(row.student_count || '') }
+      { id: 'department_code', label: 'Department Code', value: row.department_code || 'CSE' },
+      { id: 'year', label: 'Academic Year', value: row.year || '2024' },
+      { id: 'student_count', label: 'Student Count', value: String(row.student_count || '') },
+      { id: 'status', label: 'Status', value: row.status || 'Active' }
     ];
   } else {
     fields = [
       { id: 'name', label: 'Department Name', value: row.name },
-      { id: 'short_code', label: 'Short Code', value: row.short_code }
+      { id: 'short_code', label: 'Short Code', value: row.short_code },
+      { id: 'details', label: 'Details', value: row.details || '' },
+      { id: 'status', label: 'Status', value: row.status || 'Active' }
     ];
   }
 
@@ -4521,15 +4528,15 @@ function editRecord(label, id) {
         body: JSON.stringify(values)
       });
       const json = await res.json();
-      closeModal();
       if (json.success) {
+        closeModal();
         toast(json.message || 'Record updated successfully.');
-        render(current);
+        await render(current);
       } else {
         toast(json.error || 'Failed to update record.');
       }
     } catch(e) {
-      toast('Error updating record.');
+      toast('Error updating record: ' + (e.message || 'Network error'));
     }
   });
 }
@@ -6184,22 +6191,41 @@ function modalForm(title, fields, onSave) {
     </div>
   `;
 
-  document.getElementById('modalSaveBtn').onclick = () => {
+  document.getElementById('modalSaveBtn').onclick = async () => {
+    const saveBtn = document.getElementById('modalSaveBtn');
     const values = {};
     let valid = true;
     fields.forEach(f => {
       const el = document.getElementById('formField_' + f.id);
-      values[f.id] = el.value.trim();
-      if (!values[f.id] && f.required !== false) {
-        el.focus();
-        valid = false;
+      if (el) {
+        values[f.id] = el.value.trim();
+        if (!values[f.id] && f.required !== false) {
+          el.focus();
+          valid = false;
+        }
       }
     });
     if (!valid) {
       toast('Please fill out all required fields.');
       return;
     }
-    onSave(values);
+
+    saveBtn.disabled = true;
+    const origHtml = saveBtn.innerHTML;
+    saveBtn.innerHTML = '⟳ Saving...';
+
+    try {
+      await onSave(values);
+    } catch(err) {
+      console.error('Modal onSave error:', err);
+      toast(err.message || 'Error occurred while saving.');
+    } finally {
+      const btn = document.getElementById('modalSaveBtn');
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = origHtml;
+      }
+    }
   };
 }
 
