@@ -52,6 +52,14 @@ def create_app():
     def index():
         return render_template('index.html')
 
+    # Ensure fresh assets without browser caching
+    @app.after_request
+    def add_header(response):
+        response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
+        response.headers['Pragma'] = 'no-cache'
+        response.headers['Expires'] = '0'
+        return response
+
     # Global error handlers
     @app.errorhandler(404)
     def not_found_error(error):

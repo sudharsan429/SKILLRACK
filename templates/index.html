@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>INOVATE SOLUTION TECHNOLOGY — SKILLRACK</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=20261118_v9">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=20261120_v25">
 </head>
 <body>
 
@@ -93,7 +93,7 @@
           <label for="loginId">Email or roll number</label>
           <div class="input-wrap">
             <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-            <input id="loginId" placeholder="Enter email or roll number" required autocomplete="new-password" readonly onfocus="this.removeAttribute('readonly');" onpointerdown="this.removeAttribute('readonly');">
+            <input id="loginId" placeholder="Enter email or roll number" required autocomplete="username">
           </div>
         </div>
 
@@ -101,7 +101,7 @@
           <label for="loginPass">Password</label>
           <div class="input-wrap">
             <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-            <input id="loginPass" type="password" placeholder="Enter password" required autocomplete="new-password" readonly onfocus="this.removeAttribute('readonly');" onpointerdown="this.removeAttribute('readonly');">
+            <input id="loginPass" type="password" placeholder="Enter password" required autocomplete="current-password">
           </div>
         </div>
 
@@ -116,6 +116,11 @@
         <button type="submit" id="btnLoginSubmit" class="btn full btn-primary-gradient">
           <span id="loginBtnText">Sign in as Student →</span>
         </button>
+
+        <div id="loginAuthAssist" class="login-auth-assist hidden" style="margin-top:12px;padding:10px 14px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;font-size:12.5px;color:#166534;display:none;align-items:center;justify-content:space-between;gap:8px;">
+          <span id="loginAuthAssistMsg">Account exists. Update password?</span>
+          <button type="button" id="loginAuthAssistBtn" onclick="quickUpdatePasswordAndLogin()" style="background:#0071bc;color:#ffffff;border:none;padding:5px 12px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;">Update & Sign In →</button>
+        </div>
       </form>
 
       <div class="auth-footer-prompt">
@@ -155,14 +160,14 @@
             <label for="regName">Full Name <span style="color:#ef4444;">*</span></label>
             <div class="input-wrap">
               <svg class="input-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-              <input id="regName" placeholder="e.g. Rahul Sharma" required autocomplete="new-password" readonly onfocus="this.removeAttribute('readonly');" onpointerdown="this.removeAttribute('readonly');">
+              <input id="regName" placeholder="e.g. Rahul Sharma" required autocomplete="name">
             </div>
           </div>
           <div class="field">
             <label for="regEmail">Email Address <span style="color:#ef4444;">*</span></label>
             <div class="input-wrap">
               <svg class="input-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-              <input id="regEmail" type="email" placeholder="e.g. rahul@skillrack.edu" required autocomplete="new-password" readonly onfocus="this.removeAttribute('readonly');" onpointerdown="this.removeAttribute('readonly');">
+              <input id="regEmail" type="email" placeholder="e.g. rahul@skillrack.edu" required autocomplete="email">
             </div>
           </div>
         </div>
@@ -245,14 +250,14 @@
             <label for="regPass">Password <span style="color:#ef4444;">*</span></label>
             <div class="input-wrap">
               <svg class="input-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-              <input id="regPass" type="password" placeholder="Min. 4 characters" required oninput="checkPasswordMatch()" autocomplete="new-password" readonly onfocus="this.removeAttribute('readonly');" onpointerdown="this.removeAttribute('readonly');">
+              <input id="regPass" type="password" placeholder="Min. 4 characters" required oninput="checkPasswordMatch()" autocomplete="new-password">
             </div>
           </div>
           <div class="field">
             <label for="regConfirmPass">Confirm Password <span style="color:#ef4444;">*</span></label>
             <div class="input-wrap">
               <svg class="input-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-              <input id="regConfirmPass" type="password" placeholder="Repeat password" required oninput="checkPasswordMatch()" autocomplete="new-password" readonly onfocus="this.removeAttribute('readonly');" onpointerdown="this.removeAttribute('readonly');">
+              <input id="regConfirmPass" type="password" placeholder="Repeat password" required oninput="checkPasswordMatch()" autocomplete="new-password">
               <span id="pwdMatchIcon" class="pwd-match-pill hidden">✓ Match</span>
             </div>
           </div>
@@ -341,6 +346,6 @@
 <div id="toastRoot" class="toast-root"></div>
 
 <canvas id="confettiCanvas" style="position:fixed;inset:0;pointer-events:none;z-index:9999;"></canvas>
-<script src="{{ url_for('static', filename='js/app.js') }}?v=20261118_v9"></script>
+<script src="{{ url_for('static', filename='js/app.js') }}?v=20261120_v25"></script>
 </body>
 </html>

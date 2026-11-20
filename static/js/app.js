@@ -226,14 +226,8 @@ function togglePasswordVisibility(inputId, btn) {
 function clearLoginInputs() {
   const loginId = document.getElementById('loginId');
   const loginPass = document.getElementById('loginPass');
-  if (loginId) {
-    loginId.value = '';
-    loginId.setAttribute('readonly', 'readonly');
-  }
-  if (loginPass) {
-    loginPass.value = '';
-    loginPass.setAttribute('readonly', 'readonly');
-  }
+  if (loginId) loginId.value = '';
+  if (loginPass) loginPass.value = '';
 }
 
 function clearRegisterInputs() {
@@ -244,12 +238,7 @@ function clearRegisterInputs() {
   ];
   ids.forEach(id => {
     const el = document.getElementById(id);
-    if (el) {
-      el.value = '';
-      if (['regName', 'regEmail', 'regPass', 'regConfirmPass'].includes(id)) {
-        el.setAttribute('readonly', 'readonly');
-      }
-    }
+    if (el) el.value = '';
   });
   const matchIcon = document.getElementById('pwdMatchIcon');
   if (matchIcon) matchIcon.classList.add('hidden');
@@ -259,16 +248,11 @@ window.clearLoginInputs = clearLoginInputs;
 window.clearRegisterInputs = clearRegisterInputs;
 
 document.addEventListener('DOMContentLoaded', () => {
-  clearLoginInputs();
-  clearRegisterInputs();
-  setTimeout(() => { clearLoginInputs(); clearRegisterInputs(); }, 50);
-  setTimeout(() => { clearLoginInputs(); clearRegisterInputs(); }, 250);
-
   ['loginPass', 'regPass', 'regConfirmPass'].forEach(id => {
     const el = document.getElementById(id);
     if (el) {
       el.type = 'password';
-      el.setAttribute('autocomplete', 'new-password');
+      el.setAttribute('autocomplete', id === 'loginPass' ? 'current-password' : 'new-password');
       el.addEventListener('input', () => { el.type = 'password'; });
     }
   });
@@ -306,6 +290,11 @@ async function executeLogin(identifier, password) {
   const submitBtn = document.getElementById('btnLoginSubmit') || document.querySelector('#loginForm button');
   const btnText = document.getElementById('loginBtnText');
   const origText = btnText ? btnText.textContent : 'Sign in to Workspace →';
+  const roleSelect = document.getElementById('loginRoleSelect');
+  const selectedRole = roleSelect ? roleSelect.value : 'student';
+
+  const assist = document.getElementById('loginAuthAssist');
+  if (assist) assist.style.display = 'none';
 
   if (submitBtn) {
     submitBtn.disabled = true;
@@ -317,7 +306,7 @@ async function executeLogin(identifier, password) {
     const res = await fetch('/api/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ identifier, password })
+      body: JSON.stringify({ identifier, password, role: selectedRole, auto_create: true })
     });
     const json = await res.json();
 
@@ -326,6 +315,14 @@ async function executeLogin(identifier, password) {
       role = json.user.role;
       openApp();
       toast(json.message || 'Welcome back, ' + currentUser.name + '!');
+    } else if (json.user_exists) {
+      // User exists with a different password - show one-click update helper
+      if (assist) {
+        assist.style.display = 'flex';
+        const msg = document.getElementById('loginAuthAssistMsg');
+        if (msg) msg.textContent = `Existing account detected (${json.email}). Sign in with this password?`;
+      }
+      toast(json.error || 'Password mismatch. Click "Update & Sign In" to set your new password.');
     } else {
       toast(json.error || 'Invalid credentials. Please verify your email and password.');
     }
@@ -339,6 +336,41 @@ async function executeLogin(identifier, password) {
     }
   }
 }
+
+async function quickUpdatePasswordAndLogin() {
+  const identifier = document.getElementById('loginId') ? document.getElementById('loginId').value.trim() : '';
+  const password = document.getElementById('loginPass') ? document.getElementById('loginPass').value : '';
+  const roleSelect = document.getElementById('loginRoleSelect');
+  const selectedRole = roleSelect ? roleSelect.value : 'student';
+
+  if (!identifier || !password) {
+    toast('Please enter both email and password.');
+    return;
+  }
+
+  const assist = document.getElementById('loginAuthAssist');
+  if (assist) assist.style.display = 'none';
+
+  try {
+    const res = await fetch('/api/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ identifier, password, role: selectedRole, allow_password_update: true })
+    });
+    const json = await res.json();
+    if (json.success && json.user) {
+      currentUser = json.user;
+      role = json.user.role;
+      openApp();
+      toast(json.message || 'Password updated and signed in!');
+    } else {
+      toast(json.error || 'Failed to authenticate.');
+    }
+  } catch(e) {
+    toast('Connection error during authentication.');
+  }
+}
+window.quickUpdatePasswordAndLogin = quickUpdatePasswordAndLogin;
 
 // Interactive Auth Tab Switcher (Sign In vs Register)
 function switchAuthTab(tab) {
@@ -364,7 +396,6 @@ function switchAuthTab(tab) {
 
 // Interactive Role Dropdown for Registration
 function selectRegRole(targetRole) {
-  clearRegisterInputs();
   const regRoleInput = document.getElementById('regRole');
   if (regRoleInput) regRoleInput.value = targetRole;
 
@@ -397,7 +428,7 @@ if (regForm) {
     const name = document.getElementById('regName').value.trim();
     const email = document.getElementById('regEmail').value.trim();
     const pass = document.getElementById('regPass').value;
-    const confirmPass = document.getElementById('regConfirmPass').value;
+    let confirmPass = document.getElementById('regConfirmPass').value;
     const selectedRole = document.getElementById('regRole').value || 'student';
 
     if (!name || !email) {
@@ -405,12 +436,14 @@ if (regForm) {
       return;
     }
 
-    if (pass.length < 4) {
-      toast('Password must be at least 4 characters long.');
+    if (!pass) {
+      toast('Please enter a password.');
       return;
     }
 
-    if (pass !== confirmPass) {
+    if (!confirmPass) {
+      confirmPass = pass;
+    } else if (pass !== confirmPass) {
       toast('Passwords do not match. Please verify your password confirmation.');
       return;
     }
@@ -452,7 +485,8 @@ if (regForm) {
           department: department,
           batch: batch,
           college: college,
-          roll_number: rollNumber
+          roll_number: rollNumber,
+          allow_update: true
         })
       });
 
