@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>INOVATE SOLUTION TECHNOLOGY — SKILLRACK</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=20261120_v31">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=20261120_v32">
 </head>
 <body>
 
@@ -196,8 +196,8 @@
             </div>
           </div>
           <div class="field">
-            <label for="regRoll">Roll Number <span style="font-size:11px;color:var(--text-muted);font-weight:normal;">(Auto-generated if blank)</span></label>
-            <input id="regRoll" placeholder="e.g. STU105 or leave blank" autocomplete="new-password">
+            <label for="regRoll">Roll Number <span style="font-size:11px;color:var(--text-muted);font-weight:normal;">(Auto-generated if blank, max 14)</span></label>
+            <input id="regRoll" maxlength="14" placeholder="e.g. STU105 or 710020104001" autocomplete="new-password">
           </div>
         </div>
 
@@ -213,8 +213,8 @@
               </select>
             </div>
             <div class="field">
-              <label for="regFacultyCode">Faculty ID <span style="font-size:11px;color:var(--text-muted);font-weight:normal;">(Auto-generated if blank)</span></label>
-              <input id="regFacultyCode" placeholder="e.g. FAC105 or leave blank" autocomplete="new-password">
+              <label for="regFacultyCode">Faculty ID <span style="font-size:11px;color:var(--text-muted);font-weight:normal;">(Auto-generated if blank, max 14)</span></label>
+              <input id="regFacultyCode" maxlength="14" placeholder="e.g. FAC105 or leave blank" autocomplete="new-password">
             </div>
           </div>
         </div>
@@ -226,8 +226,8 @@
               <input id="regCollege" placeholder="e.g. Inovate Institute of Technology" autocomplete="new-password">
             </div>
             <div class="field">
-              <label for="regAdminCode">Admin Code <span style="font-size:11px;color:var(--text-muted);font-weight:normal;">(Auto-generated if blank)</span></label>
-              <input id="regAdminCode" placeholder="e.g. ADM005 or leave blank" autocomplete="new-password">
+              <label for="regAdminCode">Admin Code <span style="font-size:11px;color:var(--text-muted);font-weight:normal;">(Auto-generated if blank, max 14)</span></label>
+              <input id="regAdminCode" maxlength="14" placeholder="e.g. ADM005 or leave blank" autocomplete="new-password">
             </div>
           </div>
         </div>
@@ -239,8 +239,8 @@
               <input id="regSuperTitle" placeholder="e.g. Platform Systems Director" autocomplete="new-password">
             </div>
             <div class="field">
-              <label for="regSuperCode">Super Admin Code <span style="font-size:11px;color:var(--text-muted);font-weight:normal;">(Auto-generated if blank)</span></label>
-              <input id="regSuperCode" placeholder="e.g. SUP005 or leave blank" autocomplete="new-password">
+              <label for="regSuperCode">Super Admin Code <span style="font-size:11px;color:var(--text-muted);font-weight:normal;">(Auto-generated if blank, max 14)</span></label>
+              <input id="regSuperCode" maxlength="14" placeholder="e.g. SUP005 or leave blank" autocomplete="new-password">
             </div>
           </div>
         </div>
@@ -346,6 +346,6 @@
 <div id="toastRoot" class="toast-root"></div>
 
 <canvas id="confettiCanvas" style="position:fixed;inset:0;pointer-events:none;z-index:9999;"></canvas>
-<script src="{{ url_for('static', filename='js/app.js') }}?v=20261120_v31"></script>
+<script src="{{ url_for('static', filename='js/app.js') }}?v=20261120_v32"></script>
 </body>
 </html>

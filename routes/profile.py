@@ -12,19 +12,29 @@ def get_profile():
     user = get_current_user()
     profile = s.query(Profile).filter_by(user_id=user.id).first()
 
+    default_roll = {
+        'student': 'STU101',
+        'faculty': 'FAC101',
+        'admin': 'ADM001',
+        'super': 'SUP001'
+    }.get(user.role, 'STU101')
+
     if not profile:
-        # Create default profile if not yet created
+        # Create default profile if not yet created with role-based defaults
         profile = Profile(
             user_id=user.id,
             full_name=user.name,
             email=user.email,
-            roll_number=user.roll_number or '',
-            department='Computer Science and Engineering',
-            batch='2024 - 2028 · Section A',
-            college='ABC Engineering College',
-            bio='Passionate coder and problem solver.'
+            roll_number=(user.roll_number or default_roll)[:14],
+            department='Computer Science and Engineering' if user.role == 'student' else 'Information Technology',
+            batch='2024 - 2028 · Section A' if user.role == 'student' else f"{user.role.capitalize()} Department",
+            college='Inovate Institute of Technology',
+            bio=f'Passionate {user.role.capitalize()} at Inovate Institute of Technology.'
         )
         s.add(profile)
+        s.commit()
+    elif not profile.roll_number:
+        profile.roll_number = (user.roll_number or default_roll)[:14]
         s.commit()
 
     return jsonify({
@@ -61,6 +71,24 @@ def update_profile():
             fac = s.query(Faculty).filter_by(user_id=user.id).first()
             if fac:
                 fac.name = profile.full_name
+
+    if 'roll_number' in data:
+        r_num = data['roll_number'].strip()
+        # Enforce max 14 characters/numbers
+        if len(r_num) > 14:
+            return jsonify({'success': False, 'error': 'Roll number / Institutional ID cannot exceed 14 characters/numbers.'}), 400
+        profile.roll_number = r_num
+        db_user = s.query(User).filter_by(id=user.id).first()
+        if db_user:
+            db_user.roll_number = r_num
+        if user.role == 'student':
+            st = s.query(Student).filter_by(user_id=user.id).first()
+            if st:
+                st.student_code = r_num
+        elif user.role == 'faculty':
+            fac = s.query(Faculty).filter_by(user_id=user.id).first()
+            if fac:
+                fac.faculty_code = r_num
 
     if 'department' in data:
         profile.department = data['department'].strip()

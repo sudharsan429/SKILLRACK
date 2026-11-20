@@ -5490,12 +5490,50 @@ async function renderAnalytics(p) {
    PROFILE MODULE
    ======================================================== */
 async function renderProfile() {
-  const res = await fetch('/api/profile');
+  const res = await fetch('/api/profile?_t=' + Date.now(), { cache: 'no-store' });
   const json = await res.json();
   const p = json.profile || {};
-  const r = roles[role] || roles.student;
+  const currentRole = json.role || role || 'student';
+  const r = roles[currentRole] || roles.student;
 
-  return head('My profile', 'Manage institutional credentials and student portfolio details.') +
+  let rollLabel = 'Roll number / Student ID';
+  let rollPlaceholder = 'e.g. 710020104001 or STU101 (Max 14)';
+  let defaultRoll = 'STU101';
+  let subtitle = 'Manage academic portfolio, roll number, and coding tracks.';
+  let deptDefault = 'Computer Science and Engineering';
+  let batchDefault = '2024 - 2028 · Section A';
+  let bioDefault = 'Passionate coder and problem solver.';
+
+  if (currentRole === 'faculty') {
+    rollLabel = 'Faculty ID / Institutional ID';
+    rollPlaceholder = 'e.g. FAC101 or 67HJ (Max 14)';
+    defaultRoll = 'FAC101';
+    subtitle = 'Manage faculty credentials, institutional faculty code, and academic departments.';
+    deptDefault = 'Information Technology';
+    batchDefault = 'IT Department · Faculty';
+    bioDefault = 'Passionate Faculty at Inovate Institute of Technology.';
+  } else if (currentRole === 'admin') {
+    rollLabel = 'Admin Employee Code / ID';
+    rollPlaceholder = 'e.g. ADM001 or EMP2024 (Max 14)';
+    defaultRoll = 'ADM001';
+    subtitle = 'Manage campus administrator credentials, governance ID, and campus profile.';
+    deptDefault = 'Institutional Operations';
+    batchDefault = 'Campus Administration';
+    bioDefault = 'Campus Administrator overseeing institutional learning and evaluation.';
+  } else if (currentRole === 'super') {
+    rollLabel = 'Super Admin UID / System ID';
+    rollPlaceholder = 'e.g. SUP001 or ARCH01 (Max 14)';
+    defaultRoll = 'SUP001';
+    subtitle = 'Manage system architect credentials, platform UID, and platform operations.';
+    deptDefault = 'Platform Engineering';
+    batchDefault = 'Platform Architecture';
+    bioDefault = 'System Architect and Platform Lead for INOVATE SOLUTION TECHNOLOGY.';
+  }
+
+  const rawRoll = p.roll_number || (currentUser ? currentUser.roll_number : '') || defaultRoll;
+  const displayRoll = rawRoll.length > 14 ? rawRoll.slice(0, 14) : rawRoll;
+
+  return head('My profile', subtitle) +
     `<div class="card" style="max-width:760px;">
       <div class="profile-row">
         <div class="big-avatar">${(p.full_name || r.person)[0]}</div>
@@ -5514,25 +5552,29 @@ async function renderProfile() {
           <input id="profileEmail" value="${esc(p.email || r.email)}" readonly style="opacity:0.8;">
         </div>
         <div class="field">
-          <label>Roll number / Institutional ID</label>
-          <input id="profileRoll" value="${esc(p.roll_number || 'STU001')}">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+            <label style="margin:0;">${esc(rollLabel)}</label>
+            <span style="font-size:11px;color:var(--text-muted);font-weight:600;" id="profileRollCounter">${displayRoll.length}/14 max</span>
+          </div>
+          <input id="profileRoll" maxlength="14" value="${esc(displayRoll)}" placeholder="${esc(rollPlaceholder)}" oninput="updateRollCounter(this)">
+          <small class="muted" style="font-size:11px;display:block;margin-top:4px;">Maximum limit: 10 to 14 numbers/characters.</small>
         </div>
         <div class="field">
           <label>Department</label>
-          <input id="profileDept" value="${esc(p.department || 'Computer Science and Engineering')}">
+          <input id="profileDept" value="${esc(p.department || deptDefault)}">
         </div>
         <div class="field">
           <label>Batch / Section</label>
-          <input id="profileBatch" value="${esc(p.batch || '2024 - 2028 · Section A')}">
+          <input id="profileBatch" value="${esc(p.batch || batchDefault)}">
         </div>
         <div class="field">
           <label>College</label>
-          <input id="profileCollege" value="${esc(p.college || 'ABC Engineering College')}">
+          <input id="profileCollege" value="${esc(p.college || 'Inovate Institute of Technology')}">
         </div>
       </div>
       <div class="field" style="margin-top:14px;">
         <label>Bio / Research Interests</label>
-        <textarea id="profileBio" style="height:80px;">${esc(p.bio || 'Passionate about algorithms and scalable system design.')}</textarea>
+        <textarea id="profileBio" style="height:80px;">${esc(p.bio || bioDefault)}</textarea>
       </div>
       <div style="display:flex;gap:12px;margin-top:20px;">
         <button class="btn" onclick="saveProfile()">Save profile changes</button>
@@ -5540,29 +5582,57 @@ async function renderProfile() {
     </div>`;
 }
 
+function updateRollCounter(el) {
+  if (el.value.length > 14) el.value = el.value.slice(0, 14);
+  const counter = document.getElementById('profileRollCounter');
+  if (counter) counter.textContent = `${el.value.length}/14 max`;
+}
+
 async function saveProfile() {
   const full_name = document.getElementById('profileName').value.trim();
+  const roll_number = document.getElementById('profileRoll') ? document.getElementById('profileRoll').value.trim() : '';
   const department = document.getElementById('profileDept').value.trim();
   const batch = document.getElementById('profileBatch').value.trim();
   const college = document.getElementById('profileCollege').value.trim();
   const bio = document.getElementById('profileBio').value.trim();
 
+  if (roll_number.length > 14) {
+    toast('Roll number / Institutional ID cannot exceed 14 characters/numbers.');
+    return;
+  }
+
+  const saveBtn = document.querySelector('button[onclick="saveProfile()"]');
+  const origText = saveBtn ? saveBtn.innerHTML : 'Save profile changes';
+  if (saveBtn) {
+    saveBtn.disabled = true;
+    saveBtn.innerHTML = '⟳ Saving profile...';
+  }
+
   try {
     const res = await fetch('/api/profile', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ full_name, department, batch, college, bio })
+      body: JSON.stringify({ full_name, roll_number, department, batch, college, bio })
     });
     const json = await res.json();
     if (json.success) {
-      if (currentUser) currentUser.name = full_name;
+      if (currentUser) {
+        currentUser.name = full_name;
+        if (roll_number) currentUser.roll_number = roll_number;
+      }
       updateRoleUI();
       toast('Profile updated successfully.');
+      await render('My Profile');
     } else {
       toast(json.error || 'Failed to update profile.');
     }
   } catch(e) {
-    toast('Error updating profile.');
+    toast('Error updating profile: ' + (e.message || 'Server error'));
+  } finally {
+    if (saveBtn) {
+      saveBtn.disabled = false;
+      saveBtn.innerHTML = origText;
+    }
   }
 }
 
